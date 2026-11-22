@@ -19,7 +19,6 @@
 //   stroke in childhood), with a pre-transfusion HbS target of <30%.
 //   She takes hydroxyurea and receives deferasirox for transfusional
 //   iron overload.
-//   TODO: hematologist to review the scenario for clinical realism.
 // ==============================================================================
 
 
@@ -40,7 +39,7 @@ Usage: #example
 * id = "maya-johnson-patient"
 * meta.profile = "http://hl7.org/fhir/us/uscdi-scd/StructureDefinition/uscdi-scd-patient"
 
-// US Core race extension (required for health equity reporting in SCD)
+// US Core race extension (Must Support in the USCDI-SCD Patient profile)
 * extension[us-core-race].extension[ombCategory].valueCoding = urn:oid:2.16.840.1.113883.6.238#2054-5 "Black or African American"
 * extension[us-core-race].extension[text].valueString = "Black or African American"
 
@@ -147,7 +146,7 @@ Usage: #example
 * verificationStatus = $condition-ver-status#confirmed "Confirmed"
 
 // Code — dual coding SNOMED CT + ICD-10-CM
-* code.coding[+] = $sct#127040003 "Sickle cell-hemoglobin SS disease (disorder)"
+* code.coding[+] = $sct#127040003 "Sickle cell-hemoglobin SS disease"
 * code.coding[+] = $icd10cm#D57.1 "Sickle-cell disease without crisis"
 * code.text = "Sickle cell disease, HbSS"
 
@@ -202,14 +201,14 @@ Title: "Example Encounter — ED Visit for Vaso-Occlusive Crisis"
 Description: """
   Example SCDEncounter for Maya Johnson's emergency department visit for
   a vaso-occlusive pain crisis. Demonstrates required elements including
-  class, type, participant, period, and reason reference.
+  class, type, participant, period, reason code and diagnosis.
 """
 Usage: #example
 
 * id = "maya-johnson-ed-encounter"
 * status = #finished
 * class = $v3-ActCode#EMER "emergency"
-* type[+].coding[+] = $sct#50849002 "Emergency room admission (procedure)"
+* type[+].coding[+] = $sct#50849002 "Emergency room admission"
 * type[=].text = "Emergency department visit"
 * subject = Reference(maya-johnson-patient)
 * participant[+].type[+].coding[+] = $v3-ParticipationType#ATND "attender"
@@ -219,7 +218,7 @@ Usage: #example
 * reasonCode[+].coding[+] = $sct#769167005 "Vaso-occlusive pain episode in sickle cell disease"
 * reasonCode[=].text = "Acute pain crisis — vaso-occlusive"
 * diagnosis[+].condition = Reference(maya-johnson-voc-encounter-dx)
-* diagnosis[=].use.coding[+] = $diagnosis-role#AD "Admission diagnosis"
+* diagnosis[=].use.coding[+] = $diagnosis-role#DD "Discharge diagnosis"
 * serviceProvider = Reference(metro-scd-center-org)
 
 
@@ -244,7 +243,7 @@ Usage: #example
 * category[us-core] = $observation-category#laboratory "Laboratory"
 * category[+] = $scd-observation-category#hemoglobin-fractionation "Hemoglobin Fractionation"
 
-// Panel code
+// Interpretation of the hemoglobin pattern; the individual fractions are components
 * code.coding[+] = $loinc#12710-0 "Hemoglobin pattern [Interpretation] in Blood"
 * code.text = "Hemoglobin Fractionation by HPLC"
 
@@ -359,14 +358,11 @@ Usage: #example
 Instance: hydroxyurea-medication-example
 InstanceOf: SCDMedication
 Title: "Example Medication — Hydroxyurea (Siklos)"
-Description: "Example SCDMedication for hydroxyurea, a first-line disease-modifying therapy for HbSS SCD."
+Description: "Example SCDMedication for hydroxyurea, a disease-modifying therapy for SCD."
 Usage: #example
 
 * id = "hydroxyurea-medication-example"
-* code.coding[+] = $rxnorm#5552 "hydroxyurea"
-* code.coding[+].system = "http://www.nlm.nih.gov/research/umls/rxnorm"
-* code.coding[=].code = #1999316
-* code.coding[=].display = "hydroxyurea 1000 MG Oral Tablet [Siklos]"
+* code.coding[+] = $rxnorm#1999316 "hydroxyurea 1000 MG Oral Tablet [Siklos]"
 * code.text = "Hydroxyurea 1000 mg oral tablet (Siklos)"
 * form.coding[+] = $sct#421026006 "Oral tablet"
 
@@ -399,6 +395,7 @@ Usage: #example
 // Link to the blood product: Procedure.basedOn -> ServiceRequest <- BiologicallyDerivedProduct.request
 // (R4 Procedure.usedReference does not allow BiologicallyDerivedProduct)
 * basedOn[+] = Reference(exchange-transfusion-order-example)
+* location = Reference(metro-scd-center-hematology-clinic)
 
 // ==============================================================================
 // Example: BiologicallyDerivedProduct — Antigen-Matched pRBCs
@@ -420,7 +417,7 @@ Usage: #example
 // Antigen match extension (ASH 2020 recommends prophylactic Rh (C, E or C/c, E/e) and K matching)
 * extension[scd-transfusion-antigen-match].extension[matchedAntigen][+].valueCodeableConcept = $sct#84538003 "Blood group antigen C"
 * extension[scd-transfusion-antigen-match].extension[matchedAntigen][+].valueCodeableConcept = $sct#36744004 "Blood group antigen E"
-* extension[scd-transfusion-antigen-match].extension[matchedAntigen][+].valueCodeableConcept = $sct#90290005 "K antigen (Kell1) (substance)"  // TODO: code not found in SNOMED CT US Edition; terminologist to supply correct code
+* extension[scd-transfusion-antigen-match].extension[matchedAntigen][+].valueCodeableConcept = $sct#74652001 "Blood group antigen K"
 * extension[scd-transfusion-antigen-match].extension[matchingProtocol].valueString = "Prophylactic Rh (C, E) and K antigen matching (ASH 2020 transfusion guideline)"
 
 // Blood product age extension (5 days from collection to transfusion)
@@ -431,10 +428,10 @@ Usage: #example
 
 * productCategory = #cells
 * productCode.coding[+] = $sct#431069006 "Packed red blood cells"
-* productCode.coding[+] = $scd-blood-product-processing#sickle-cell-negative "Sickle Cell Trait Negative (HbS Negative)"
 * productCode.text = "Packed RBCs — leukoreduced, Rh (C, E) and K antigen-matched, HbS-negative"
 
-* status = #available
+// The unit was transfused on 2024-11-21, so it is no longer available.
+* status = #unavailable
 
 // Link back to transfusion order
 * request[+] = Reference(exchange-transfusion-order-example)
@@ -447,11 +444,15 @@ Usage: #example
 * processing[=].procedure.coding[+] = $scd-blood-product-processing#leukoreduced "Leukoreduced"
 * processing[=].timeDateTime = "2024-11-16T02:00:00-06:00"
 
-* processing[+].description = "Antigen-negative unit selection: C-neg, E-neg, K-neg; HbS-negative unit confirmed"
-* processing[=].procedure.coding[+] = $scd-blood-product-processing#antigen-matched-C-neg "C Antigen Negative (Rh system)"
-* processing[=].procedure.coding[+] = $scd-blood-product-processing#antigen-matched-E-neg "E Antigen Negative (Rh system)"
-* processing[=].procedure.coding[+] = $scd-blood-product-processing#antigen-matched-K-neg "K Antigen Negative (Kell system)"
-* processing[=].procedure.coding[+] = $scd-blood-product-processing#sickle-cell-negative "Sickle Cell Trait Negative (HbS Negative)"
+// One processing entry per attribute: codings in one CodeableConcept must mean the same thing.
+* processing[+].description = "Antigen-negative unit selection: C-negative"
+* processing[=].procedure = $scd-blood-product-processing#antigen-matched-C-neg "C Antigen Negative (Rh system)"
+* processing[+].description = "Antigen-negative unit selection: E-negative"
+* processing[=].procedure = $scd-blood-product-processing#antigen-matched-E-neg "E Antigen Negative (Rh system)"
+* processing[+].description = "Antigen-negative unit selection: K-negative"
+* processing[=].procedure = $scd-blood-product-processing#antigen-matched-K-neg "K Antigen Negative (Kell system)"
+* processing[+].description = "HbS-negative (sickle cell trait negative) unit confirmed"
+* processing[=].procedure = $scd-blood-product-processing#sickle-cell-negative "Sickle Cell Trait Negative (HbS Negative)"
 
 // Storage
 * storage[+].duration.start = "2024-11-16T03:00:00-06:00"
@@ -481,12 +482,12 @@ Usage: #example
 
 
 // ==============================================================================
-// Example: AllergyIntolerance — NSAID Hypersensitivity
+// Example: AllergyIntolerance — NSAID Intolerance (Ibuprofen)
 // ==============================================================================
 
 Instance: maya-johnson-nsaid-allergy
 InstanceOf: SCDAllergyIntolerance
-Title: "Example AllergyIntolerance — NSAID Hypersensitivity"
+Title: "Example AllergyIntolerance — NSAID Intolerance (Ibuprofen)"
 Description: """
   Example SCDAllergyIntolerance documenting Maya Johnson's documented
   intolerance to NSAIDs (ibuprofen), relevant for SCD pain management.
@@ -500,7 +501,7 @@ Usage: #example
 * category[+] = #medication
 * criticality = #high
 * code.coding[+] = $rxnorm#5640 "ibuprofen"
-* code.text = "Ibuprofen (NSAID) — renal toxicity risk; avoid in SCD"
+* code.text = "Ibuprofen (NSAID)"
 * patient = Reference(maya-johnson-patient)
 * onsetString = "2018"
 * reaction[+].substance.coding[+] = $rxnorm#5640 "ibuprofen"
@@ -517,7 +518,7 @@ InstanceOf: SCDMedicationRequest
 Title: "Example MedicationRequest — Hydroxyurea Prescription"
 Description: """
   Example SCDMedicationRequest for Maya Johnson's ongoing hydroxyurea
-  prescription, her first-line disease-modifying therapy for HbSS SCD.
+  prescription, a disease-modifying therapy for SCD.
 """
 Usage: #example
 
@@ -650,3 +651,36 @@ Usage: #example
 
 * activity[+].detail.status = #in-progress
 * activity[=].detail.description = "Monitor serum ferritin and liver iron concentration for transfusional iron overload"
+
+
+// ==============================================================================
+// Example: MedicationStatement — Hydroxyurea Adherence
+// ==============================================================================
+// No profile in this guide uses the SCD Hydroxyurea Adherence extension (KI-7),
+// so this example is a FHIR R4 MedicationStatement.
+
+Instance: maya-johnson-hydroxyurea-adherence
+InstanceOf: MedicationStatement
+Title: "Example MedicationStatement — Hydroxyurea Adherence"
+Description: """
+  Example FHIR R4 MedicationStatement recording that Maya Johnson takes
+  hydroxyurea as prescribed, with the SCD Hydroxyurea Adherence extension
+  giving the adherence level, how it was assessed and when.
+"""
+Usage: #example
+
+* id = "maya-johnson-hydroxyurea-adherence"
+* extension[+].url = "http://hl7.org/fhir/us/uscdi-scd/StructureDefinition/scd-hydroxyurea-adherence"
+* extension[=].extension[+].url = "adherenceLevel"
+* extension[=].extension[=].valueCodeableConcept = $sct#1156699004 "Complies with drug therapy"
+* extension[=].extension[+].url = "adherenceMethod"
+* extension[=].extension[=].valueCodeableConcept.text = "Patient report and pharmacy refill records"
+* extension[=].extension[+].url = "assessmentDate"
+* extension[=].extension[=].valueDate = "2024-10-15"
+* basedOn[+] = Reference(maya-johnson-hydroxyurea-request)
+* status = #active
+* medicationReference = Reference(hydroxyurea-medication-example)
+* subject = Reference(maya-johnson-patient)
+* effectivePeriod.start = "2024-06-03"
+* dateAsserted = "2024-10-15"
+* informationSource = Reference(maya-johnson-patient)

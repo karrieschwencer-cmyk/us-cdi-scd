@@ -188,3 +188,108 @@ Usage: #example
 * insert MatchEntry(MedicationRequest, maya-johnson-hydroxyurea-request)
 * insert MatchEntry(MedicationRequest, maya-johnson-deferasirox-request)
 * insert IncludeEntry(Medication, hydroxyurea-medication-example)
+
+
+// ==============================================================================
+// Searchset — Encounters for the patient
+// ==============================================================================
+
+Instance: maya-johnson-search-encounters
+InstanceOf: Bundle
+Title: "Test Bundle — Search Result: Encounters for Patient"
+Description: """
+  Expected server response to `GET [base]/Encounter?patient=maya-johnson-patient`.
+  Returns the ED visit for vaso-occlusive crisis.
+"""
+Usage: #example
+
+* id = "maya-johnson-search-encounters"
+* type = #searchset
+* total = 1
+* link[+].relation = "self"
+* link[=].url = "http://example.org/fhir/Encounter?patient=maya-johnson-patient"
+* insert MatchEntry(Encounter, maya-johnson-ed-encounter)
+
+
+// ==============================================================================
+// Searchset — Allergies for the patient
+// ==============================================================================
+
+Instance: maya-johnson-search-allergies
+InstanceOf: Bundle
+Title: "Test Bundle — Search Result: Allergies for Patient"
+Description: """
+  Expected server response to `GET [base]/AllergyIntolerance?patient=maya-johnson-patient`.
+  Returns the NSAID (ibuprofen) intolerance.
+"""
+Usage: #example
+
+* id = "maya-johnson-search-allergies"
+* type = #searchset
+* total = 1
+* link[+].relation = "self"
+* link[=].url = "http://example.org/fhir/AllergyIntolerance?patient=maya-johnson-patient"
+* insert MatchEntry(AllergyIntolerance, maya-johnson-nsaid-allergy)
+
+
+// ==============================================================================
+// Searchset — Procedures for the patient
+// ==============================================================================
+
+Instance: maya-johnson-search-procedures
+InstanceOf: Bundle
+Title: "Test Bundle — Search Result: Procedures for Patient"
+Description: """
+  Expected server response to `GET [base]/Procedure?patient=maya-johnson-patient`.
+  Returns the automated red cell exchange transfusion.
+"""
+Usage: #example
+
+* id = "maya-johnson-search-procedures"
+* type = #searchset
+* total = 1
+* link[+].relation = "self"
+* link[=].url = "http://example.org/fhir/Procedure?patient=maya-johnson-patient"
+* insert MatchEntry(Procedure, maya-johnson-exchange-transfusion)
+
+
+// ==============================================================================
+// Searchset — Care Plans for the patient
+// ==============================================================================
+
+Instance: maya-johnson-search-careplans
+InstanceOf: Bundle
+Title: "Test Bundle — Search Result: Care Plans for Patient"
+Description: """
+  Expected server response to `GET [base]/CarePlan?patient=maya-johnson-patient&category=assess-plan`.
+  Returns the chronic transfusion care plan.
+"""
+Usage: #example
+
+* id = "maya-johnson-search-careplans"
+* type = #searchset
+* total = 1
+* link[+].relation = "self"
+* link[=].url = "http://example.org/fhir/CarePlan?patient=maya-johnson-patient&category=assess-plan"
+* insert MatchEntry(CarePlan, maya-johnson-chronic-transfusion-plan)
+
+
+// ==============================================================================
+// Searchset — Service Requests for the patient
+// ==============================================================================
+
+Instance: maya-johnson-search-servicerequests
+InstanceOf: Bundle
+Title: "Test Bundle — Search Result: Service Requests for Patient"
+Description: """
+  Expected server response to `GET [base]/ServiceRequest?patient=maya-johnson-patient`.
+  Returns the exchange transfusion order.
+"""
+Usage: #example
+
+* id = "maya-johnson-search-servicerequests"
+* type = #searchset
+* total = 1
+* link[+].relation = "self"
+* link[=].url = "http://example.org/fhir/ServiceRequest?patient=maya-johnson-patient"
+* insert MatchEntry(ServiceRequest, exchange-transfusion-order-example)
