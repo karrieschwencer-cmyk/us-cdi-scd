@@ -1,5 +1,5 @@
 # ==============================================================================
-# SUSHI Configuration for USCDI + Sickle Cell Disease Implementation Guide
+# SUSHI Configuration for USCDI+ Sickle Cell Disease Implementation Guide
 # ==============================================================================
 # This file configures the FHIR Shorthand (FSH) project for the
 # USCDI-SCD Implementation Guide.
@@ -13,11 +13,11 @@
 id: hl7.fhir.us.uscdi-scd
 canonical: http://hl7.org/fhir/us/uscdi-scd
 name: USCDISickleCellDiseaseIG
-title: "USCDI + Sickle Cell Disease Implementation Guide"
+title: "USCDI+ Sickle Cell Disease Implementation Guide"
 description: >
-  The USCDI + Sickle Cell Disease Implementation Guide (USCDI-SCD) defines
+  The USCDI+ Sickle Cell Disease Implementation Guide (USCDI-SCD) defines
   FHIR profiles, extensions, value sets, and code systems to support the
-  exchange of clinical data for patients with Sickle Cell Disease (SCD)
+  exchange of clinical data for people with sickle cell disease (SCD)
   in alignment with the United States Core Data for Interoperability (USCDI)
   and US Core 8.0.1.
 status: draft              # draft | active | retired | unknown
@@ -32,16 +32,9 @@ releaseLabel: draft         # ci-build | draft | qa-preview | ballot | trial-use
 
 publisher:
   name: HL7 International / Public Health
-  url: https://www.hl7.org/Special/committees/pher
-  email: PHER@HL7.org
-
-contact:
-  - name: HL7 Public Health Work Group
-    telecom:
-      - system: url
-        value: http://www.hl7.org/Special/committees/pher
-      - system: email
-        value: PHER@HL7.org
+  # SUSHI turns the publisher into the single contact on every resource. The IG
+  # Publisher requires this exact work group URL (http, not https).
+  url: http://www.hl7.org/Special/committees/pher
 
 # -----------------------------------------------------------------------
 # Jurisdiction
@@ -97,6 +90,8 @@ pages:
     title: Audience
   glossary.md:
     title: Glossary
+  references.md:
+    title: References
   conformance.md:
     title: Conformance Requirements
   workflow.md:
@@ -127,6 +122,8 @@ pages:
 # -----------------------------------------------------------------------
 # Menu (Navigation Bar)
 # -----------------------------------------------------------------------
+# SUSHI 3.21.1 or later is required: earlier versions write href="#" on
+# dropdowns, which the IG Publisher rejects.
 menu:
   Home: index.html
   Introduction:
@@ -136,6 +133,7 @@ menu:
     Overview: overview.html
     Audience: audience.html
     Glossary: glossary.html
+    References: references.html
   Guidance:
     Conformance Requirements: conformance.html
     Exchange Workflow: workflow.html
@@ -171,9 +169,8 @@ parameters:
   apply-version: 'true'
   show-inherited-invariants: 'false'
   usage-stats-opt-out: 'false'
-  # Suppress certain known warnings from dependencies
+  # Do not produce Turtle (TTL) renderings of resources
   excludettl: 'true'
-  validation: 'allow-any-extensions'
 
 # -----------------------------------------------------------------------
 # Resources — explicitly listed artifacts

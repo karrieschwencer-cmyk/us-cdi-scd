@@ -47,27 +47,47 @@ to address SCD-specific data exchange needs.
 │   │   ├── extensions/
 │   │   │   └── SCD_Extensions.fsh          # SCD-specific FHIR extensions
 │   │   ├── valuesets/
-│   │   │   └── SCD_ValueSets.fsh           # Value set definitions
+│   │   │   └── SCD_ValueSets.fsh           # Value set definitions (all reference lists)
 │   │   ├── codesystems/
 │   │   │   └── SCD_CodeSystems.fsh         # Local code system definitions
 │   │   └── instances/
 │   │       ├── SCD_Examples.fsh            # Clinical example instances
+│   │       ├── SCD_TestBundles.fsh         # Test data and expected search results
 │   │       └── SCD_CapabilityStatements.fsh # Server/Client CapabilityStatements
 │   │
+│   ├── includes/
+│   │   └── fragment-pagebegin.html # TEMPORARY template fix; remove when HL7/ig-template-base2#56 is fixed
+│   ├── images/                     # Diagrams (SVG) and the data element mapping CSV
+│   ├── images-source/              # Original diagram drafts (superseded by the SVGs)
+│   ├── intro-notes/                # Styles for generated CapabilityStatement pages
+│   │
 │   └── pagecontent/                # Markdown narrative pages
-│       ├── index.md                # Home page
-│       ├── introduction.md         # Introduction
-│       ├── background.md           # Clinical & policy background
-│       ├── scope_and_usage.md      # Scope, use cases
-│       ├── overview.md             # Architecture overview, data element mapping
-│       ├── audience.md             # Intended audiences
-│       ├── conformance.md          # Must Support, conformance requirements
-│       ├── profiles.md             # Profile narrative descriptions
-│       ├── extensions.md           # Extension descriptions
-│       ├── terminology.md          # Value sets and code systems
-│       ├── security.md             # Security and privacy guidance
-│       ├── downloads.md            # Downloadable artifacts
-│       └── changes.md              # Change log
+│       ├── index.md                    # Home page
+│       ├── introduction.md             # Introduction
+│       ├── background.md               # Clinical & policy background
+│       ├── scope_and_usage.md          # Scope, use cases and scenarios
+│       ├── overview.md                 # Information model, profile summary, conventions
+│       ├── audience.md                 # Intended audiences, FAQ, feedback
+│       ├── glossary.md                 # Glossary
+│       ├── references.md               # Cited guidelines, labeling and regulations
+│       ├── conformance.md              # Must Support, CapabilityStatements, additions to US Core
+│       ├── workflow.md                 # Exchange workflow
+│       ├── security.md                 # Security and privacy guidance
+│       ├── issues.md                   # Known issues and open questions
+│       ├── profiles.md                 # Profile narrative descriptions
+│       ├── extensions.md               # Extension descriptions
+│       ├── terminology.md              # Value sets and code systems
+│       ├── examples.md                 # Example instances
+│       ├── data-element-mapping.md     # Generated: profile element chart
+│       ├── uscdi-plus.md               # Generated: USCDI+ SCD data element mapping
+│       ├── testing.md                  # Test data and conformance testing
+│       ├── downloads.md                # Downloadable artifacts
+│       └── changes.md                  # Change log
+│
+├── scripts/
+│   ├── generate-mapping.js         # Writes data-element-mapping.md and its CSV (run after a build)
+│   ├── generate-uscdi-plus.js      # Writes uscdi-plus.md from ONC's data element lists
+│   └── data/                       # ONC USCDI+ SCD data element lists (Version 1)
 │
 └── _build.sh                       # Build script (SUSHI + IG Publisher, see also _build.bat)
 ```
@@ -108,7 +128,7 @@ to address SCD-specific data exchange needs.
 ## Prerequisites
 
 - **[Node.js](https://nodejs.org/) ≥ 18** (required for SUSHI)
-- **[SUSHI](https://fshschool.org/)** (FSH compiler): `npm install -g fsh-sushi`
+- **[SUSHI](https://fshschool.org/) 3.21.1 or later** (FSH compiler): `npm install -g fsh-sushi`. Earlier versions generate a menu that the current IG Publisher rejects.
 - **Java 17+** (required for IG Publisher)
 - **[HL7 IG Publisher](https://github.com/HL7/fhir-ig-publisher/releases)**: `_build.sh update` downloads `publisher.jar` into `input-cache/` (it also checks the parent directory as a fallback)
 
@@ -127,22 +147,39 @@ This IG is built with the standard HL7 tooling ([FHIR Shorthand / SUSHI](https:/
 
 The generated output is written to the `output/` directory; open `output/index.html` to view the build.
 
+Alternatively, `_build.sh` wraps the same steps:
+
+| Command | What it does |
+|---|---|
+| `_build.sh update` | Download or update `publisher.jar` (into `input-cache/`) and the build scripts |
+| `_build.sh build` | Full build (SUSHI + IG Publisher) |
+| `_build.sh nosushi` | Build without running SUSHI |
+| `_build.sh notx` | Build without the terminology server |
+| `_build.sh jekyll` | Run only the Jekyll step for the narrative pages |
+| `_build.sh clean` | Remove temporary directories and output |
+
+`sushi .` on its own validates the FSH and compiles it to FHIR JSON in `fsh-generated/`. The guide depends on `hl7.fhir.us.core` 8.0.1, `hl7.fhir.uv.extensions.r4` 5.1.0 and `us.nlm.vsac` 0.19.0 (see `sushi-config.yaml`).
+
 
 ## Additional Open Items
 
-This guide is developed under the FHIR Community Process and is not intended for ballot. Open items are tracked as `TODO` comments in the source; the full checklist is in [pull request #1](https://github.com/FHIR/us-cdi-scd/pull/1).
+This guide is developed under the FHIR Community Process, tested at a connectathon, and reviewed by subject matter experts and the HL7 Public Health Work Group. Open items are tracked as `TODO` comments in the source; the full checklist is in [pull request #1](https://github.com/FHIR/us-cdi-scd/pull/1).
 
-- [ ] Select codes for the remaining red cell antigens and blood products (ISBT 128 options)
+- [x] Replace the red cell antigen codes that were not in SNOMED CT
+- [ ] Select codes for stem cell products from bone marrow and cord blood (ISBT 128)
+- [ ] Resolve the project-team and terminology decisions listed on the Known Issues and Open Questions page
 - [ ] Resolve the open items on the Exchange Workflow page and complete the CapabilityStatements (search parameters, SMART scopes)
 - [x] Map ONC's Version 1 USCDI+ SCD data elements to the profiles (USCDI+ SCD Data Elements page)
 - [ ] Resolve the USCDI+ SCD coverage gaps listed on the Known Issues and Open Questions page
 - [ ] Add test data for additional patients, including a pediatric patient
-- [ ] Review extensions against hl7.fhir.uv.extensions.r4 for reuse opportunities
-- [ ] Clinical review of the example scenario
+- [x] Review extensions for reuse (SCD Hydroxyurea Adherence retired in favor of the US Core Medication Adherence extension)
+- [ ] Confirm the publication pathway with the FHIR Management Group and the Public Health Work Group (KI-15)
+- [ ] Request OIDs and register the Jira specification with HL7 (KI-2, KI-13)
+- [ ] Add the ONC feedback address to the Audience page
 
 ## Contributing
 
 <!-- TODO: Add contributing guidelines, GitHub issue template link,
      HL7 Jira project link, and work group meeting schedule. -->
 
-Issues and pull requests welcome. Please follow [HL7 FHIR IG development conventions](https://confluence.hl7.org/display/FHIR/IG+Publisher+Documentation).
+Issues and pull requests welcome. Please follow [HL7 FHIR IG development conventions](https://build.fhir.org/ig/FHIR/ig-guidance/).

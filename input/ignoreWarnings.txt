@@ -2,3 +2,26 @@
 
 # Add warning and information messages from qa.html here (one per line) to suppress them,
 # with a comment above each explaining why it is acceptable. Errors cannot be suppressed.
+# "%" matches any text.
+
+# Terminology versions. The RxNorm (05052025) and SNOMED CT US Edition (20250301) versions
+# come from the us.nlm.vsac 0.19.0 value set expansions that US Core 8.0.1 depends on; this
+# guide's FSH sets no code system versions. The terminology server holds newer versions, so the
+# codes are still checked against the current release.
+A definition for CodeSystem 'http://www.nlm.nih.gov/research/umls/rxnorm' version '05052025' could not be found, so the code cannot be validated. Valid versions: %
+A definition for CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/731000124108/version/20250301' could not be found, so the code cannot be validated. Valid versions: %
+
+# Several versions of these HL7 Terminology, VSAC and extension canonicals are in the package
+# cache because US Core 8.0.1 and the extensions pack depend on different releases. They are
+# inherited from US Core; this guide does not reference them directly.
+There are multiple different potential matches for the url 'http://terminology.hl7.org/ValueSet/USPS-State'%
+There are multiple different potential matches for the url 'http://terminology.hl7.org/ValueSet/v2-0116'%
+There are multiple different potential matches for the url 'http://terminology.hl7.org/ValueSet/v2-0092'%
+There are multiple different potential matches for the url 'http://terminology.hl7.org/ValueSet/v3-USEncounterDischargeDisposition'%
+There are multiple different potential matches for the url 'http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1186.8'%
+There are multiple different potential matches for the url 'http://hl7.org/fhir/StructureDefinition/condition-assertedDate'%
+
+# Dependency versions. This draft is built on US Core 8.0.1 (USCDI v5) by design; moving to a
+# newer US Core is tracked as KI-14 on the Known Issues and Open Questions page.
+The ImplementationGuide uses package hl7.fhir.us.core#8.0.1 released on 2025-12-10, but the most recent appropriate version is 9.0.0. This reference is getting old and the more recent version should be considered
+The ImplementationGuide uses package hl7.fhir.uv.extensions.r4#5.1.0 released on 2024-04-27, but the most recent appropriate version is 5.4.0. This reference is getting old and the more recent version should be considered
