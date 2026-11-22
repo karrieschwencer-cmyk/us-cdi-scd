@@ -310,13 +310,13 @@ Description: """
 // Must Support (US Core requirements, plus any added by this guide) from US Core Medication
 * code MS
 * code ^short = "SCD medication code (RxNorm; US Core extensible binding)"
-// Non-constraining reference binding (purpose open): adds no requirement beyond
+// Non-constraining reference binding (purpose starter): adds no requirement beyond
 // the US Core binding, which still applies.
 * code ^binding.extension[+].url = "http://hl7.org/fhir/tools/StructureDefinition/additional-binding"
 * code ^binding.extension[=].extension[+].url = "key"
 * code ^binding.extension[=].extension[=].valueId = "scd-medication-reference"
 * code ^binding.extension[=].extension[+].url = "purpose"
-* code ^binding.extension[=].extension[=].valueCode = #open
+* code ^binding.extension[=].extension[=].valueCode = #starter
 * code ^binding.extension[=].extension[+].url = "valueSet"
 * code ^binding.extension[=].extension[=].valueCanonical = Canonical(SCDMedicationVS)
 * code ^binding.extension[=].extension[+].url = "documentation"
@@ -373,13 +373,13 @@ Description: """
 * status MS
 * intent MS
 * medication[x] MS
-// Non-constraining reference binding (purpose open): adds no requirement beyond
+// Non-constraining reference binding (purpose starter): adds no requirement beyond
 // the US Core binding, which still applies.
 * medication[x] ^binding.extension[+].url = "http://hl7.org/fhir/tools/StructureDefinition/additional-binding"
 * medication[x] ^binding.extension[=].extension[+].url = "key"
 * medication[x] ^binding.extension[=].extension[=].valueId = "scd-medication-reference"
 * medication[x] ^binding.extension[=].extension[+].url = "purpose"
-* medication[x] ^binding.extension[=].extension[=].valueCode = #open
+* medication[x] ^binding.extension[=].extension[=].valueCode = #starter
 * medication[x] ^binding.extension[=].extension[+].url = "valueSet"
 * medication[x] ^binding.extension[=].extension[=].valueCanonical = Canonical(SCDMedicationVS)
 * medication[x] ^binding.extension[=].extension[+].url = "documentation"

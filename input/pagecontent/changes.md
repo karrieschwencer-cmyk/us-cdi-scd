@@ -51,7 +51,7 @@ CHANGE LOG PAGE — changes.md
 
 - Terminology approach: the guide adds no terminology constraints beyond
   US Core. The SCD value sets are reference lists. Five are linked to their
-  profile elements as Additional Bindings with the purpose open, which do not
+  profile elements as Additional Bindings with the purpose starter, which do not
   constrain the element: SCD Diagnosis and SCD Acute Complication
   (`Condition.code`), SCD Procedure (`Procedure.code`), SCD Medication
   (`Medication.code` and `MedicationRequest.medication[x]`) and SCD Laboratory
@@ -90,6 +90,9 @@ CHANGE LOG PAGE — changes.md
 
 **Clinical and terminology review**
 
+- The additional bindings use the purpose `starter`, a non-constraining code
+  from the FHIR tools additional binding purpose code system, instead of
+  `open`, which is an abstract grouping code in that code system
 - Codes added to the reference value sets after clinical review, each verified
   on tx.fhir.org: acute complications (priapism, hemorrhagic stroke, delayed
   hemolytic transfusion reaction, acute kidney injury, osteomyelitis),
@@ -103,8 +106,8 @@ CHANGE LOG PAGE — changes.md
 
 **Readability and navigation changes**
 
-- Home page: a status note (draft version, number of known issues and open
-  questions, how to give feedback) and a coverage summary. The Guide Contents
+- Home page: a status note (draft version, links to the known issues and open
+  questions and to how to give feedback) and a coverage summary. The Guide Contents
   table, which repeated the menu, is replaced by a pointer to the menu
 - Known Issues and Open Questions: a summary table with the impact of each
   item, an anchor for every item, the Must Support items that may be removed,

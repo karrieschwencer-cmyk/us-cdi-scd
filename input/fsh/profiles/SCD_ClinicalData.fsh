@@ -82,13 +82,13 @@ Description: """
 * code ^binding.extension[=].extension[=].valueCanonical = "http://hl7.org/fhir/us/core/ValueSet/us-core-procedure-code"
 * code ^binding.extension[=].extension[+].url = "documentation"
 * code ^binding.extension[=].extension[=].valueMarkdown = "US Core uses the current additional binding from FHIR R5 for this coded element for more flexibility when exchanging legacy and text-only data."
-// Non-constraining reference binding (purpose open): adds no requirement beyond
+// Non-constraining reference binding (purpose starter): adds no requirement beyond
 // the US Core binding, which still applies.
 * code ^binding.extension[+].url = "http://hl7.org/fhir/tools/StructureDefinition/additional-binding"
 * code ^binding.extension[=].extension[+].url = "key"
 * code ^binding.extension[=].extension[=].valueId = "scd-procedure-reference"
 * code ^binding.extension[=].extension[+].url = "purpose"
-* code ^binding.extension[=].extension[=].valueCode = #open
+* code ^binding.extension[=].extension[=].valueCode = #starter
 * code ^binding.extension[=].extension[+].url = "valueSet"
 * code ^binding.extension[=].extension[=].valueCanonical = Canonical(SCDProcedureVS)
 * code ^binding.extension[=].extension[+].url = "documentation"
@@ -249,13 +249,13 @@ Description: """
   US Core requires LOINC codes here (extensible binding). The SCD Laboratory
   Panel value set lists tests commonly used in SCD care, for reference.
 """
-// Non-constraining reference binding (purpose open): adds no requirement beyond
+// Non-constraining reference binding (purpose starter): adds no requirement beyond
 // the US Core binding, which still applies.
 * code ^binding.extension[+].url = "http://hl7.org/fhir/tools/StructureDefinition/additional-binding"
 * code ^binding.extension[=].extension[+].url = "key"
 * code ^binding.extension[=].extension[=].valueId = "scd-laboratory-reference"
 * code ^binding.extension[=].extension[+].url = "purpose"
-* code ^binding.extension[=].extension[=].valueCode = #open
+* code ^binding.extension[=].extension[=].valueCode = #starter
 * code ^binding.extension[=].extension[+].url = "valueSet"
 * code ^binding.extension[=].extension[=].valueCanonical = Canonical(SCDLaboratoryPanelVS)
 * code ^binding.extension[=].extension[+].url = "documentation"

@@ -7,7 +7,7 @@ It should provide a brief orienting summary and quick navigation links.
 
 {%- endcomment -%}
 
-> **Status: draft, version 0.1.0.** This guide has 15 known issues and 27 open questions; four of the open questions must be settled before systems in different organizations can exchange data. See [Known Issues and Open Questions](issues.html). To comment, see [How to Give Feedback](audience.html#how-to-give-feedback).
+> **Status: draft, version 0.1.0.** See [Known Issues and Open Questions](issues.html). To comment, see [How to Give Feedback](audience.html#how-to-give-feedback).
 
 ### Overview
 

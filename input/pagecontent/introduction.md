@@ -27,7 +27,7 @@ Each profile page describes one type of record, such as a patient, a diagnosis o
 - **Key Elements table:** the elements that matter most. This is the best place to start.
 - **Must Support (S):** elements marked with an **S** must be supported by conforming systems. See [Must Support](conformance.html#must-support).
 - **Cardinality** (for example, `1..1` or `0..*`): how many times an element can appear. A `1` on the left means the element is required.
-- **Bindings:** the code sets (value sets) an element's codes come from. An **Additional Binding** with the purpose **open** is a reference list and does not constrain the element. See [Terminology Approach](terminology.html#terminology-approach).
+- **Bindings:** the code sets (value sets) an element's codes come from. An **Additional Binding** with the purpose **starter** is a reference list and does not constrain the element. See [Terminology Approach](terminology.html#terminology-approach).
 - **Examples:** sample records showing the profile in use.
 
 The **Differential** view shows only what this guide changes compared to the parent profile (a US Core profile, or the base FHIR resource for BiologicallyDerivedProduct). The **Snapshot** view shows the complete definition.

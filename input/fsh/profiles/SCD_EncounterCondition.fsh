@@ -144,13 +144,13 @@ Description: """
 * code ^binding.extension[=].extension[=].valueMarkdown = "US Core uses the current additional binding for encoding newly recorded, non-legacy problem list items, health concerns and diagnosis"
 * code ^binding.extension[=].extension[+].url = "shortDoco"
 * code ^binding.extension[=].extension[=].valueString = "Required for new records"
-// Non-constraining reference binding (purpose open): adds no requirement beyond
+// Non-constraining reference binding (purpose starter): adds no requirement beyond
 // the US Core binding, which still applies.
 * code ^binding.extension[+].url = "http://hl7.org/fhir/tools/StructureDefinition/additional-binding"
 * code ^binding.extension[=].extension[+].url = "key"
 * code ^binding.extension[=].extension[=].valueId = "scd-diagnosis-reference"
 * code ^binding.extension[=].extension[+].url = "purpose"
-* code ^binding.extension[=].extension[=].valueCode = #open
+* code ^binding.extension[=].extension[=].valueCode = #starter
 * code ^binding.extension[=].extension[+].url = "valueSet"
 * code ^binding.extension[=].extension[=].valueCanonical = Canonical(SCDDiagnosisVS)
 * code ^binding.extension[=].extension[+].url = "documentation"
@@ -161,7 +161,7 @@ Description: """
 * code ^binding.extension[=].extension[+].url = "key"
 * code ^binding.extension[=].extension[=].valueId = "scd-acute-complication-reference"
 * code ^binding.extension[=].extension[+].url = "purpose"
-* code ^binding.extension[=].extension[=].valueCode = #open
+* code ^binding.extension[=].extension[=].valueCode = #starter
 * code ^binding.extension[=].extension[+].url = "valueSet"
 * code ^binding.extension[=].extension[=].valueCanonical = Canonical(SCDAcuteComplicationVS)
 * code ^binding.extension[=].extension[+].url = "documentation"
@@ -268,13 +268,13 @@ Description: """
 * code ^binding.extension[=].extension[=].valueMarkdown = "US Core uses the current additional binding for encoding newly recorded, non-legacy problem list items, health concerns and diagnosis"
 * code ^binding.extension[=].extension[+].url = "shortDoco"
 * code ^binding.extension[=].extension[=].valueString = "Required for new records"
-// Non-constraining reference binding (purpose open): adds no requirement beyond
+// Non-constraining reference binding (purpose starter): adds no requirement beyond
 // the US Core binding, which still applies.
 * code ^binding.extension[+].url = "http://hl7.org/fhir/tools/StructureDefinition/additional-binding"
 * code ^binding.extension[=].extension[+].url = "key"
 * code ^binding.extension[=].extension[=].valueId = "scd-diagnosis-reference"
 * code ^binding.extension[=].extension[+].url = "purpose"
-* code ^binding.extension[=].extension[=].valueCode = #open
+* code ^binding.extension[=].extension[=].valueCode = #starter
 * code ^binding.extension[=].extension[+].url = "valueSet"
 * code ^binding.extension[=].extension[=].valueCanonical = Canonical(SCDDiagnosisVS)
 * code ^binding.extension[=].extension[+].url = "documentation"
@@ -285,7 +285,7 @@ Description: """
 * code ^binding.extension[=].extension[+].url = "key"
 * code ^binding.extension[=].extension[=].valueId = "scd-acute-complication-reference"
 * code ^binding.extension[=].extension[+].url = "purpose"
-* code ^binding.extension[=].extension[=].valueCode = #open
+* code ^binding.extension[=].extension[=].valueCode = #starter
 * code ^binding.extension[=].extension[+].url = "valueSet"
 * code ^binding.extension[=].extension[=].valueCanonical = Canonical(SCDAcuteComplicationVS)
 * code ^binding.extension[=].extension[+].url = "documentation"
