@@ -13,13 +13,13 @@ Example instances for each profile are listed on the [Examples](examples.html) p
 These profiles identify the patient, providers, organizations and care locations involved in SCD care. Most add no constraints beyond US Core. They exist so that every other profile in this guide can reference a consistent USCDI-SCD version.
 
 #### [USCDI-SCD Patient](StructureDefinition-uscdi-scd-patient.html)
-Represents a person with, or at risk for, Sickle Cell Disease. It inherits US Core's race and ethnicity extensions, which are particularly important for SCD, where health equity reporting is a priority. Telecom and preferred language (`communication`) are Must Support, so that care teams can reach patients and their caregivers.
+Represents a person with, or at risk for, sickle cell disease. Race and ethnicity (the US Core Race and US Core Ethnicity extensions) are Must Support in this profile. Telecom and preferred language (`communication`) are also Must Support, so that care teams can reach patients and their caregivers.
 
 #### [USCDI-SCD Practitioner](StructureDefinition-uscdi-scd-practitioner.html)
 Represents a provider involved in SCD care, such as a hematologist, emergency physician, primary care provider, pain specialist or transfusion medicine physician. It adds no constraints to US Core Practitioner.
 
 #### [USCDI-SCD PractitionerRole](StructureDefinition-uscdi-scd-practitionerrole.html)
-Represents a provider's role at a specific organization and location. SCD care teams often span specialties and organizations, including hematology, primary care, emergency medicine, social work, pain management and care coordination.
+Represents a provider's role at a specific organization and location. SCD care teams can span specialties and organizations, such as hematology, primary care, emergency medicine, social work, pain management and care coordination. It adds no constraints to US Core PractitionerRole.
 
 #### [USCDI-SCD Organization](StructureDefinition-uscdi-scd-organization.html)
 Represents an organization providing SCD care, such as a comprehensive SCD treatment center, hematology practice, Federally Qualified Health Center or hospital. It adds no constraints to US Core Organization.
@@ -41,23 +41,17 @@ Represents a visit, such as an emergency visit for a vaso-occlusive crisis, a sc
 SCD diagnoses are split into two profiles, following the US Core pattern: one for the long-term problem list and one for diagnoses made during a specific visit.
 
 #### [USCDI-SCD Condition Problems and Health Concerns](StructureDefinition-uscdi-scd-condition-problems.html)
-Represents entries on the patient's problem list, most importantly the primary SCD diagnosis, including the SCD subtype (for example HbSS, HbSC or HbS-β⁰-thalassemia), along with chronic complications. The subtype is recorded in the diagnosis code itself; the [SCD Diagnosis Value Set](ValueSet-scd-diagnosis-vs.html) lists codes for each subtype. Who recorded and who asserted the condition, and the supporting evidence, are Must Support. Laboratory results that the diagnosis is based on, such as a hemoglobin fractionation, can be linked by referencing them in `Condition.evidence.detail`.
-
-<!-- TODO: Terminologist to review after the terminology meeting: (1) the removal of the
-     SCD Genotype extension and value set, with the SCD subtype carried in the diagnosis
-     code (Condition.code); and (2) the guidance on linking supporting laboratory results
-     through Condition.evidence.detail (see also the open question on whether
-     evidence.detail, rather than evidence.id, should be Must Support). -->
+Represents entries on the patient's problem list, most importantly the primary SCD diagnosis, including the SCD subtype (for example HbSS, HbSC or HbS-β⁰-thalassemia), along with chronic complications. The subtype is recorded in the diagnosis code itself; the [SCD Diagnosis Value Set](ValueSet-scd-diagnosis-vs.html) lists codes for each subtype. This is a reference list and does not constrain exchange; ONC maintains the SCD-relevant values in [USCDI+](uscdi-plus.html) (data element: Problems). Who recorded and who asserted the condition, and the supporting evidence, are Must Support. Laboratory results that the diagnosis is based on, such as a newborn screening result or a hemoglobin fractionation, are linked by referencing them in `Condition.evidence.detail`.
 
 #### [USCDI-SCD Condition Encounter Diagnosis](StructureDefinition-uscdi-scd-condition-encounter-diagnosis.html)
-Represents an acute diagnosis made during a visit, such as a vaso-occlusive crisis, acute chest syndrome, splenic sequestration or stroke. Clinical and verification status, onset, resolution (`abatement`) and evidence are Must Support. Codes for acute complications are listed in the [SCD Acute Complication Value Set](ValueSet-scd-acute-complication-vs.html).
+Represents an acute diagnosis made during a visit, such as a vaso-occlusive crisis, acute chest syndrome, splenic sequestration or stroke. Clinical and verification status, onset, resolution (`abatement`) and evidence are Must Support. Codes for acute complications are listed in the [SCD Acute Complication Value Set](ValueSet-scd-acute-complication-vs.html). This is a reference list and does not constrain exchange; ONC maintains the SCD-relevant values in [USCDI+](uscdi-plus.html) (data element: Problems).
 
 ---
 
 ### Medication Profiles
 
 #### [USCDI-SCD Medication](StructureDefinition-uscdi-scd-medication.html)
-Represents a medication used in SCD care, coded with RxNorm. This includes disease-modifying therapies (hydroxyurea, L-glutamine, crizanlizumab), gene therapies (exagamglogene autotemcel, lovotibeglogene autotemcel), iron chelation (deferasirox, deferoxamine, deferiprone) and infection prophylaxis (penicillin). Commonly used codes are listed in the [SCD Medication Value Set](ValueSet-scd-medication-vs.html).
+Represents a medication used in SCD care, coded with RxNorm. This includes disease-modifying therapies (hydroxyurea, L-glutamine, crizanlizumab), gene therapies (exagamglogene autotemcel, lovotibeglogene autotemcel), iron chelation (deferasirox, deferoxamine, deferiprone) and infection prophylaxis (penicillin). Commonly used codes are listed in the [SCD Medication Value Set](ValueSet-scd-medication-vs.html). This is a reference list and does not constrain exchange; ONC maintains the SCD-relevant values in [USCDI+](uscdi-plus.html) (data element: Medications).
 
 #### [USCDI-SCD MedicationRequest](StructureDefinition-uscdi-scd-medicationrequest.html)
 Represents a prescription or medication order, linking a medication to the patient, prescriber, dosage and reason. For iron chelation prescriptions, the [SCD Iron Chelation Indication](StructureDefinition-scd-iron-chelation-indication.html) extension documents the indication and the ferritin or liver iron value that triggered therapy.
@@ -67,7 +61,7 @@ Represents a prescription or medication order, linking a medication to the patie
 ### Allergy and Intolerance Profile
 
 #### [USCDI-SCD AllergyIntolerance](StructureDefinition-uscdi-scd-allergyintolerance.html)
-Represents drug allergies, intolerances and adverse reactions, including transfusion reactions. These are especially important in SCD: NSAIDs can harm the kidneys, opioid reactions affect pain management, and patients who receive many transfusions are at risk of hemolytic and other transfusion reactions. Type, category, criticality, onset and reaction details are Must Support.
+Represents drug allergies, intolerances and adverse reactions, including transfusion reactions. These matter in SCD care. NSAIDs can be nephrotoxic, and the [NHLBI 2014 expert panel report](references.html#nhlbi-2014) notes that acute renal failure can occur when people with sickle cell nephropathy are exposed to them. Opioid reactions affect pain management. The [ASH 2020 transfusion guideline](references.html#ash-2020-transfusion) addresses delayed hemolytic transfusion reactions in people with SCD who receive transfusions. Type, category, criticality, onset and reaction details are Must Support.
 
 ---
 
@@ -84,9 +78,9 @@ Represents a referral or order, such as a referral to hematology, pain managemen
 ### Procedure Profile
 
 #### [USCDI-SCD Procedure](StructureDefinition-uscdi-scd-procedure.html)
-Represents procedures performed for SCD, including simple and exchange transfusions, stem cell transplantation, splenectomy, venous access port placement and monitoring procedures such as transcranial Doppler screening. Performer and reason are Must Support.
+Represents procedures performed for SCD, including simple and exchange transfusions, stem cell transplantation, splenectomy, venous access port placement and monitoring procedures such as transcranial Doppler screening. Performer and reason are Must Support. Common codes are listed in the [SCD Procedure Value Set](ValueSet-scd-procedure-vs.html). This is a reference list and does not constrain exchange; ONC maintains the SCD-relevant values in [USCDI+](uscdi-plus.html) (data element: Procedures).
 
-For transfusions, the procedure SHOULD reference the transfusion order in `basedOn`. The blood product(s) used reference the same order, which links the procedure to the specific products. FHIR R4 does not allow `Procedure.usedReference` to point to a BiologicallyDerivedProduct directly.
+For transfusions, the procedure SHOULD reference the transfusion order in `basedOn`. FHIR R4 does not allow `Procedure.usedReference` to reference a BiologicallyDerivedProduct. So the units transfused are linked through the order: `Procedure.basedOn` references the ServiceRequest, and each blood product's `BiologicallyDerivedProduct.request` references the same ServiceRequest. `Procedure.usedReference` is for medications or devices used during the procedure, where relevant; this profile allows USCDI-SCD Medication and Device. Whether `basedOn` should be Must Support, and whether `usedReference` should remain Must Support, is an open question ([OQ-20](issues.html#oq-20)).
 
 ---
 
@@ -96,22 +90,24 @@ For transfusions, the procedure SHOULD reference the transfusion order in `based
 Represents laboratory results used to monitor SCD, including:
 
 - Complete blood count and reticulocyte count
-- Hemoglobin fractionation (HbS %, HbF %, HbA2 %), used to guide hydroxyurea and transfusion therapy
+- Hemoglobin fractionation (HbS %, HbF %, HbA2 %). HbF is monitored for response to hydroxyurea ([NHLBI 2014](references.html#nhlbi-2014)), and HbS is kept below a target level during chronic transfusion for stroke prevention ([ASH 2020 cerebrovascular guideline](references.html#ash-2020-cerebrovascular))
 - Hemolysis markers (LDH, bilirubin)
-- Iron studies (ferritin), for iron overload monitoring
+- Iron studies (ferritin), for iron overload monitoring ([ASH 2020 transfusion guideline](references.html#ash-2020-transfusion))
 - Kidney and liver function
 - Red cell antigen typing and antibody screening before transfusion
 
-Reference ranges and components are Must Support, so that panels like hemoglobin fractionation can report each value. Common LOINC codes are listed in the [SCD Laboratory Panel Value Set](ValueSet-scd-laboratory-panel-vs.html).
+Reference ranges and components are Must Support, so that panels like hemoglobin fractionation can report each value. Common LOINC codes are listed in the [SCD Laboratory Panel Value Set](ValueSet-scd-laboratory-panel-vs.html). This is a reference list and does not constrain exchange; ONC maintains the SCD-relevant values in [USCDI+](uscdi-plus.html) (data element: Tests).
 
 #### [USCDI-SCD Vital Signs](StructureDefinition-uscdi-scd-vital-signs.html)
-Represents vital signs, with emphasis on measurements that matter most in SCD:
+Represents vital signs, with emphasis on measurements used in SCD care:
 
-- Oxygen saturation (SpO2), which is critical for detecting acute chest syndrome
+- Oxygen saturation (SpO2). The [NHLBI 2014 expert panel report](references.html#nhlbi-2014) calls for pulse oximetry when evaluating a patient for acute chest syndrome, and for oxygen when SpO2 is below 95% on room air during a vaso-occlusive crisis
 - Pain severity score (0–10), used to assess vaso-occlusive crises
-- Blood pressure, temperature and respiratory rate, used to detect kidney, vascular and infectious complications
+- Temperature. The NHLBI 2014 report calls for immediate evaluation of a temperature of 38.5 °C (101.3 °F) or higher, because of the risk of severe bacterial infection
+- Blood pressure. The [ASH 2019 cardiopulmonary and kidney guideline](references.html#ash-2019-cardiopulmonary-kidney) recommends a goal below 130/80 mm Hg (as amended by its [2023 correction](references.html#ash-2019-cardiopulmonary-kidney-correction)) for adults with SCD
+- Respiratory rate. Tachypnea is one of the signs that the NHLBI 2014 report lists for evaluating acute chest syndrome
 
-Codes are listed in the [SCD Vital Signs Value Set](ValueSet-scd-vital-signs-vs.html).
+Codes are listed in the [SCD Vital Signs Value Set](ValueSet-scd-vital-signs-vs.html). This is a reference list and does not constrain exchange; the US Core vital signs bindings apply. Pain scores are profiled here as vital signs, which is an open question ([OQ-22](issues.html#oq-22)).
 
 ---
 
@@ -120,6 +116,6 @@ Codes are listed in the [SCD Vital Signs Value Set](ValueSet-scd-vital-signs-vs.
 #### [USCDI-SCD BiologicallyDerivedProduct](StructureDefinition-uscdi-scd-biologicallyderivedproduct.html)
 Represents a blood product, such as packed red blood cells or hematopoietic progenitor cells for transplantation. This is the only profile in this guide with no US Core parent; it is based directly on the FHIR R4 BiologicallyDerivedProduct resource.
 
-Transfusion is a cornerstone of SCD care, and people with SCD who receive transfusions are at high risk of developing antibodies to donor blood; ASH 2020 recommends Rh (C, E or C/c, E/e) and K antigen-matched blood. This profile records the product type, the order it fulfills (`request`), collection, processing steps (such as leukoreduction and antigen matching) and storage, all as Must Support. Two extensions add SCD-specific detail: [SCD Transfusion Red Cell Antigen Match](StructureDefinition-scd-transfusion-antigen-match.html) and [SCD Blood Product Age at Transfusion](StructureDefinition-scd-blood-product-age.html).
+Red cell transfusion remains a mainstay of SCD therapy. The [ASH 2020 transfusion guideline](references.html#ash-2020-transfusion) reports that red cell alloimmunization (forming antibodies to donor red cells) is more common in SCD than in any other transfused patient population, and recommends red cells matched for the Rh (C, E or C/c, E/e) and K antigens. This profile records the product type, the order it fulfills (`request`), collection, processing steps (such as leukoreduction and antigen matching) and storage, all as Must Support. Two extensions add SCD-specific detail: [SCD Transfusion Red Cell Antigen Match](StructureDefinition-scd-transfusion-antigen-match.html) and [SCD Blood Product Age at Transfusion](StructureDefinition-scd-blood-product-age.html).
 
-The FHIR R4 version of this resource is limited. It has no direct link to the patient who received the product, and transfusion procedures cannot reference it directly. This guide links products to patients and procedures through the transfusion order (ServiceRequest). Later FHIR versions (R5 and later) improve this resource.
+The FHIR R4 version of this resource is limited. It has no direct link to the patient who received the product, and transfusion procedures cannot reference it directly. This guide links products to patients and procedures through the transfusion order (ServiceRequest) ([KI-5](issues.html#ki-5)). In FHIR R5, `Procedure.used` can reference a BiologicallyDerivedProduct directly.

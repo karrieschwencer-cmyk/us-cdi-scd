@@ -5,7 +5,9 @@ INTRODUCTION PAGE — introduction.md
 
 {%- endcomment -%}
 
-Responding to interoperability challenges expressed by federal and non-federal partners, the Office of the National Coordinator for Health Information Technology (ONC) is leveraging the United States Core Data for Interoperability Plus (USCDI+) service to develop a minimum core dataset for SCD data exchange. USCDI+ extends core data elements in USCDI to meet specific use cases that will benefit from harmonized data elements and help align many related but disparate efforts to collect and exchange SCD-relevant data. By publishing and maintaining a minimum core dataset informed by stakeholder needs, ONC envisions greater data exchange to improve care coordination, research comparability, and national surveillance, maximizing health outcomes for SCD warriors.
+This page explains the purpose of this guide, how it relates to other standards, and how to read it.
+
+In response to interoperability challenges raised by federal and non-federal partners, the Office of the National Coordinator for Health Information Technology (ONC) is using the United States Core Data for Interoperability Plus (USCDI+) service to develop a minimum core dataset for sickle cell disease (SCD) data exchange. USCDI+ extends the data elements in USCDI for specific use cases. Shared data elements help align the many separate efforts to collect and exchange SCD data. ONC publishes and maintains the dataset, which is informed by the needs of the people and organizations involved in SCD care. ONC's goal is more data exchange to improve care coordination, research comparability and national surveillance, and so improve health outcomes for people living with SCD. This guide represents the USCDI+ SCD data elements in FHIR.
 
 ### Relationship to Other Standards and Guides
 
@@ -15,7 +17,7 @@ This guide is based on [FHIR R4 (4.0.1)](http://hl7.org/fhir/R4/) and builds on 
 
 ### How to Read This Guide
 
-You don't need to read this guide front to back. The [Home](index.html) page lists where each type of reader should start ([Who This Guide Is For](index.html#who-this-guide-is-for)) and what each page contains ([Guide Contents](index.html#guide-contents)).
+You don't need to read this guide front to back. The [Home](index.html) page lists where each type of reader should start ([Who This Guide Is For](index.html#who-this-guide-is-for)) and where to find the full list of pages and artifacts ([Guide Contents](index.html#guide-contents)).
 
 #### Reading a profile page
 
@@ -25,10 +27,10 @@ Each profile page describes one type of record, such as a patient, a diagnosis o
 - **Key Elements table:** the elements that matter most. This is the best place to start.
 - **Must Support (S):** elements marked with an **S** must be supported by conforming systems. See [Must Support](conformance.html#must-support).
 - **Cardinality** (for example, `1..1` or `0..*`): how many times an element can appear. A `1` on the left means the element is required.
-- **Bindings:** the code sets (value sets) an element's codes come from.
+- **Bindings:** the code sets (value sets) an element's codes come from. An **Additional Binding** with the purpose **open** is a reference list and does not constrain the element. See [Terminology Approach](terminology.html#terminology-approach).
 - **Examples:** sample records showing the profile in use.
 
-The **Differential** view shows only what this guide changes compared to the parent US Core profile. The **Snapshot** view shows the complete definition.
+The **Differential** view shows only what this guide changes compared to the parent profile (a US Core profile, or the base FHIR resource for BiologicallyDerivedProduct). The **Snapshot** view shows the complete definition.
 
 #### Conformance language
 

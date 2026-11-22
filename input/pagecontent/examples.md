@@ -17,14 +17,14 @@ All examples are entirely fictional and contain no real patient data.
 | [PractitionerRole — Dr. Sarah Chen, Hematologist](PractitionerRole-dr-sarah-chen-hematology-role.html) | [USCDI-SCD PractitionerRole](StructureDefinition-uscdi-scd-practitionerrole.html) |
 | [Location — Metro Sickle Cell Center Hematology Clinic](Location-metro-scd-center-hematology-clinic.html) | [USCDI-SCD Location](StructureDefinition-uscdi-scd-location.html) |
 
-### Encounter and Conditions
+### Encounter, Conditions and Allergies
 
 | Example | Profile |
 |---|---|
 | [Encounter — ED Visit for Vaso-Occlusive Crisis](Encounter-maya-johnson-ed-encounter.html) | [USCDI-SCD Encounter](StructureDefinition-uscdi-scd-encounter.html) |
 | [Condition — HbSS Sickle Cell Disease (Problem List)](Condition-maya-johnson-scd-diagnosis.html) | [USCDI-SCD Condition Problems and Health Concerns](StructureDefinition-uscdi-scd-condition-problems.html) |
 | [Condition — Acute Vaso-Occlusive Crisis (Encounter Diagnosis)](Condition-maya-johnson-voc-encounter-dx.html) | [USCDI-SCD Condition Encounter Diagnosis](StructureDefinition-uscdi-scd-condition-encounter-diagnosis.html) |
-| [AllergyIntolerance — NSAID Hypersensitivity](AllergyIntolerance-maya-johnson-nsaid-allergy.html) | [USCDI-SCD AllergyIntolerance](StructureDefinition-uscdi-scd-allergyintolerance.html) |
+| [AllergyIntolerance — NSAID Intolerance (Ibuprofen)](AllergyIntolerance-maya-johnson-nsaid-allergy.html) | [USCDI-SCD AllergyIntolerance](StructureDefinition-uscdi-scd-allergyintolerance.html) |
 
 ### Observations
 
@@ -47,6 +47,7 @@ All examples are entirely fictional and contain no real patient data.
 | [Medication — Hydroxyurea](Medication-hydroxyurea-medication-example.html) | [USCDI-SCD Medication](StructureDefinition-uscdi-scd-medication.html) |
 | [MedicationRequest — Hydroxyurea Prescription](MedicationRequest-maya-johnson-hydroxyurea-request.html) | [USCDI-SCD MedicationRequest](StructureDefinition-uscdi-scd-medicationrequest.html) |
 | [MedicationRequest — Deferasirox Iron Chelation](MedicationRequest-maya-johnson-deferasirox-request.html) | [USCDI-SCD MedicationRequest](StructureDefinition-uscdi-scd-medicationrequest.html) |
+| [MedicationStatement — Hydroxyurea Adherence](MedicationStatement-maya-johnson-hydroxyurea-adherence.html) | FHIR R4 MedicationStatement, with the [SCD Hydroxyurea Adherence](StructureDefinition-scd-hydroxyurea-adherence.html) extension |
 | [ServiceRequest — Exchange Transfusion Order](ServiceRequest-exchange-transfusion-order-example.html) | [USCDI-SCD ServiceRequest](StructureDefinition-uscdi-scd-servicerequest.html) |
 | [Procedure — Automated Red Cell Exchange Transfusion](Procedure-maya-johnson-exchange-transfusion.html) | [USCDI-SCD Procedure](StructureDefinition-uscdi-scd-procedure.html) |
 | [BiologicallyDerivedProduct — Antigen-Matched pRBCs](BiologicallyDerivedProduct-prbcs-antigen-matched-example.html) | [USCDI-SCD BiologicallyDerivedProduct](StructureDefinition-uscdi-scd-biologicallyderivedproduct.html) |
