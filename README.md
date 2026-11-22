@@ -7,23 +7,12 @@ The IG supports two use cases:
 1. **SCD Diagnosis** — ensuring that all individuals living with SCD are consistently and accurately identified across various care settings using structured data.
 2. **SCD Emergency Care** — ensuring the treatment or interventions received by individuals living with SCD during an acute episode are consistent with care previously received and are adequately captured.
 
-This draft IG is intended for Connectathon testing and piloting.
-
-This repository contains the FHIR Shorthand (FSH) source for the
-**USCDI + Sickle Cell Disease (USCDI-SCD) Implementation Guide**, an HL7
-FHIR Implementation Guide for structured clinical data exchange for patients
-with Sickle Cell Disease (SCD).
-
-The USCDI-SCD IG defines FHIR R4 profiles, extensions, value sets, code systems,
-and example instances that extend [US Core 8.0.1](http://hl7.org/fhir/us/core/STU8.0.1/)
-to address SCD-specific data exchange needs.
-
-
+This draft IG (version 0.1.0) is intended for Connectathon testing and piloting. It defines FHIR R4 profiles, extensions, value sets, code systems and example instances that extend [US Core 8.0.1](http://hl7.org/fhir/us/core/STU8.0.1/) for data about people with sickle cell disease. A preview of the current build is at [uscdi-scd-preview.surge.sh](https://uscdi-scd-preview.surge.sh).
 
 ## FHIR Foundation Project Statement
 
 * **Maintainers:** Kahuina Consulting, LLC on contract with the Office of the National Coordinator for Health IT (ONC).
-* **Issues / Discussion:** There are no anticipated issues at this time. The draft IG is intended for Connectathon testing and piloting and uses existing US Core FHIR resources and profiles. Issues and suggestions may be submitted via [GitHub Issues](https://github.com/FHIR/us-cdi-scd/issues).
+* **Issues / Discussion:** Known issues and open questions are listed on the guide's Known Issues and Open Questions page. Issues and suggestions may be submitted via [GitHub Issues](https://github.com/FHIR/us-cdi-scd/issues).
 * **License:** [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/).
 * **Contribution Policy:** This initial draft was developed with input from patients, clinicians, researchers, and the FHIR community. Contributions are welcome from any community that may benefit or be affected by this work. The testing team will collect issues and suggestions via GitHub Issues, and from the testing partners during the Connectathon. All contributions will be reviewed by the maintainers for alignment with project goals and ONC requirements and triaged appropriately.
 * **Security Information:** This repository contains code to build an IG for proof-of-concept testing and piloting. Piloting will not include production systems or live patient data. Any identified security concerns will be reported to the testing team. In production implementations, the IG will be used by hospital and provider EHRs and similar systems and inherit the security features of those systems.
@@ -57,7 +46,8 @@ to address SCD-specific data exchange needs.
 │   │
 │   ├── includes/
 │   │   └── fragment-pagebegin.html # TEMPORARY template fix; remove when HL7/ig-template-base2#56 is fixed
-│   ├── images/                     # Diagrams (SVG) and the data element mapping CSV
+│   ├── images/                     # Diagrams (SVG), the data element mapping CSV and the
+│   │                               #   reference value set spreadsheet (both generated)
 │   ├── images-source/              # Original diagram drafts (superseded by the SVGs)
 │   ├── intro-notes/                # Styles for generated CapabilityStatement pages
 │   │
@@ -90,9 +80,10 @@ to address SCD-specific data exchange needs.
 │   ├── generate-value-set-workbook.py # Writes the value set spreadsheet from fsh-generated (run after SUSHI)
 │   └── data/                       # ONC USCDI+ SCD data element lists (Version 1)
 │
+├── terminology-review/            # Terminology review of the SCD value set workbook (not published)
+│
 └── _build.sh                       # Build script (SUSHI + IG Publisher, see also _build.bat)
 ```
-
 
 ## Included Profiles
 
@@ -110,6 +101,7 @@ to address SCD-specific data exchange needs.
 | USCDI-SCD CarePlan | CarePlan | US Core CarePlan 8.0.1 |
 | USCDI-SCD ServiceRequest | ServiceRequest | US Core ServiceRequest 8.0.1 |
 | USCDI-SCD Medication | Medication | US Core Medication 8.0.1 |
+| USCDI-SCD MedicationRequest | MedicationRequest | US Core MedicationRequest 8.0.1 |
 | USCDI-SCD Procedure | Procedure | US Core Procedure 8.0.1 |
 | USCDI-SCD Laboratory Result | Observation | US Core Laboratory Result Observation 8.0.1 |
 | USCDI-SCD Vital Signs | Observation | US Core Vital Signs 8.0.1 |
@@ -133,7 +125,6 @@ to address SCD-specific data exchange needs.
 - **[SUSHI](https://fshschool.org/) 3.21.1 or later** (FSH compiler): `npm install -g fsh-sushi`. Earlier versions generate a menu that the current IG Publisher rejects.
 - **Java 17+** (required for IG Publisher)
 - **[HL7 IG Publisher](https://github.com/HL7/fhir-ig-publisher/releases)**: `_build.sh update` downloads `publisher.jar` into `input-cache/` (it also checks the parent directory as a fallback)
-
 
 ## Building the IG
 
@@ -160,12 +151,21 @@ Alternatively, `_build.sh` wraps the same steps:
 | `_build.sh jekyll` | Run only the Jekyll step for the narrative pages |
 | `_build.sh clean` | Remove temporary directories and output |
 
-`sushi .` on its own validates the FSH and compiles it to FHIR JSON in `fsh-generated/`. The guide depends on `hl7.fhir.us.core` 8.0.1, `hl7.fhir.uv.extensions.r4` 5.1.0 and `us.nlm.vsac` 0.19.0 (see `sushi-config.yaml`).
+`sushi .` on its own validates the FSH and compiles it to FHIR JSON in `fsh-generated/`.
 
+**Generated files.** Three files are generated and committed. After changing the FSH, regenerate them and build again so the published pages match:
+
+1. Build once (SUSHI and IG Publisher).
+2. `node scripts/generate-uscdi-plus.js` writes `input/pagecontent/uscdi-plus.md`.
+3. `node scripts/generate-mapping.js` writes `input/pagecontent/data-element-mapping.md` and its CSV, from `output/`. Check that it reports about 280 rows; far fewer means the build did not complete.
+4. `python scripts/generate-value-set-workbook.py` writes `input/images/uscdi-scd-reference-value-sets.xlsx` from `fsh-generated/`.
+5. Build again.
+
+ The guide depends on `hl7.fhir.us.core` 8.0.1, `hl7.fhir.uv.extensions.r4` 5.1.0 and `us.nlm.vsac` 0.19.0 (see `sushi-config.yaml`).
 
 ## Additional Open Items
 
-This guide is developed under the FHIR Community Process, tested at a connectathon, and reviewed by subject matter experts and the HL7 Public Health Work Group. Open items are tracked as `TODO` comments in the source; the full checklist is in [pull request #1](https://github.com/FHIR/us-cdi-scd/pull/1).
+This guide is developed under the FHIR Community Process, tested at a connectathon, and reviewed by subject matter experts and the HL7 Public Health Work Group. Open items are listed on the guide's Known Issues and Open Questions page and tracked as `TODO` comments in the source.
 
 - [x] Replace the red cell antigen codes that were not in SNOMED CT
 - [ ] Select codes for stem cell products from bone marrow and cord blood (ISBT 128)
@@ -174,10 +174,12 @@ This guide is developed under the FHIR Community Process, tested at a connectath
 - [x] Map ONC's Version 1 USCDI+ SCD data elements to the profiles (USCDI+ SCD Data Elements page)
 - [ ] Resolve the USCDI+ SCD coverage gaps listed on the Known Issues and Open Questions page
 - [ ] Add test data for additional patients, including a pediatric patient
-- [x] Review extensions for reuse (SCD Hydroxyurea Adherence retired in favor of the US Core Medication Adherence extension)
+- [ ] Decide whether to retire the SCD Hydroxyurea Adherence extension in favor of the US Core Medication Adherence extension (OQ-28)
+- [x] Review the SCD value set workbook and add the accepted codes to the value sets (see `terminology-review/`)
 - [ ] Confirm the publication pathway with the FHIR Management Group and the Public Health Work Group (KI-15)
 - [ ] Request OIDs and register the Jira specification with HL7 (KI-2, KI-13)
 - [ ] Add the ONC feedback address to the Audience page
+- [ ] Remove `input/includes/fragment-pagebegin.html` once HL7/ig-template-base2#56 is fixed
 
 ## Contributing
 
