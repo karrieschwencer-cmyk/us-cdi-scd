@@ -87,6 +87,7 @@ to address SCD-specific data exchange needs.
 ├── scripts/
 │   ├── generate-mapping.js         # Writes data-element-mapping.md and its CSV (run after a build)
 │   ├── generate-uscdi-plus.js      # Writes uscdi-plus.md from ONC's data element lists
+│   ├── generate-value-set-workbook.py # Writes the value set spreadsheet from fsh-generated (run after SUSHI)
 │   └── data/                       # ONC USCDI+ SCD data element lists (Version 1)
 │
 └── _build.sh                       # Build script (SUSHI + IG Publisher, see also _build.bat)
@@ -128,6 +129,7 @@ to address SCD-specific data exchange needs.
 ## Prerequisites
 
 - **[Node.js](https://nodejs.org/) ≥ 18** (required for SUSHI)
+- **Python 3 with openpyxl** (`pip install openpyxl`), for `scripts/generate-value-set-workbook.py`
 - **[SUSHI](https://fshschool.org/) 3.21.1 or later** (FSH compiler): `npm install -g fsh-sushi`. Earlier versions generate a menu that the current IG Publisher rejects.
 - **Java 17+** (required for IG Publisher)
 - **[HL7 IG Publisher](https://github.com/HL7/fhir-ig-publisher/releases)**: `_build.sh update` downloads `publisher.jar` into `input-cache/` (it also checks the parent directory as a fallback)

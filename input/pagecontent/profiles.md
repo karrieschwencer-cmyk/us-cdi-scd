@@ -51,7 +51,7 @@ Represents an acute diagnosis made during a visit, such as a vaso-occlusive cris
 ### Medication Profiles
 
 #### [USCDI-SCD Medication](StructureDefinition-uscdi-scd-medication.html)
-Represents a medication used in SCD care, coded with RxNorm. This includes disease-modifying therapies (hydroxyurea, L-glutamine, crizanlizumab), gene therapies (exagamglogene autotemcel, lovotibeglogene autotemcel), iron chelation (deferasirox, deferoxamine, deferiprone) and infection prophylaxis (penicillin). Commonly used codes are listed in the [SCD Medication Value Set](ValueSet-scd-medication-vs.html). This is a reference list and does not constrain exchange; ONC maintains the SCD-relevant values in [USCDI+](uscdi-plus.html) (data element: Medications).
+Represents a medication used in SCD care, coded with RxNorm. This includes disease-modifying therapies (hydroxyurea, L-glutamine, crizanlizumab), gene therapies (exagamglogene autotemcel, lovotibeglogene autotemcel), iron chelation (deferasirox, deferoxamine, deferiprone), analgesics, anticoagulants and infection prophylaxis (penicillin). Commonly used codes are listed in the [SCD Medication Value Set](ValueSet-scd-medication-vs.html). This is a reference list and does not constrain exchange; ONC maintains the SCD-relevant values in [USCDI+](uscdi-plus.html) (data element: Medications).
 
 #### [USCDI-SCD MedicationRequest](StructureDefinition-uscdi-scd-medicationrequest.html)
 Represents a prescription or medication order, linking a medication to the patient, prescriber, dosage and reason. For iron chelation prescriptions, the [SCD Iron Chelation Indication](StructureDefinition-scd-iron-chelation-indication.html) extension documents the indication and the ferritin or liver iron value that triggered therapy.

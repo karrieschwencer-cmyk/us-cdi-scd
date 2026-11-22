@@ -57,6 +57,12 @@ When comparing a server's response with the expected Bundle, compare which recor
 
 ---
 
+### Values for Building Test Data
+
+To build test data for other patients, use the codes in the guide's value sets. They are available as a spreadsheet, [Reference Value Sets (Excel)](uscdi-scd-reference-value-sets.xlsx), with one sheet per value set. The values are reference lists of codes commonly used in SCD care: they do not constrain exchange, and any code valid under US Core is also valid under this guide.
+
+---
+
 ### How to Test Conformance
 
 #### Validate your resources

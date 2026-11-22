@@ -15,6 +15,7 @@ recorded in the source history, not here.
 - Server and client CapabilityStatements that import the US Core 8.0.1 CapabilityStatements
 - A mapping of ONC's Version 1 USCDI+ SCD data elements to the profiles
 - Examples and test data for a fictional patient, with expected search results
+- The value sets as a downloadable spreadsheet, generated from the value set definitions
 
 **Decisions**
 

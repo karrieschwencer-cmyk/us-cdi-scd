@@ -16,5 +16,6 @@ This page lists the files you can download from this guide, such as the FHIR pac
 | [Examples (XML)](../examples.xml.zip) | All example instances (XML) |
 | [Schematron](../schematrons.zip) | Schematron validation rules |
 | [Data Element Mapping (CSV)](uscdi-scd-data-element-mapping.csv) | Every Must Support and required element, with cardinality, type and binding, plus the data elements carried by US Core profiles used directly and blank columns for a gap analysis (see [Data Element Mapping](data-element-mapping.html)) |
+| [Reference Value Sets (Excel)](uscdi-scd-reference-value-sets.xlsx) | The guide's nine value sets, one sheet each, with every code and display. They are reference lists, for example for building test data, and do not constrain exchange |
 | [Test Data Bundle (JSON)](Bundle-maya-johnson-test-data-transaction.json) | Transaction Bundle that loads the Maya Johnson test patient into a FHIR server (see [Test Data](testing.html)) |
 

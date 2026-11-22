@@ -34,10 +34,12 @@ Id: scd-diagnosis-vs
 Title: "SCD Diagnosis Value Set"
 Description: """
   Value set of codes representing the primary Sickle Cell Disease diagnoses,
-  including all major genotypic subtypes. Linked as a reference list to
-  `Condition.code` in both USCDI-SCD Condition profiles.
+  including all major genotypic subtypes, with and without crisis. Linked as a
+  reference list to `Condition.code` in both USCDI-SCD Condition profiles.
 
-  Includes ICD-10-CM D57.x codes and equivalent SNOMED CT codes.
+  Includes ICD-10-CM D57.x codes and equivalent SNOMED CT codes, and the SNOMED
+  CT concepts for suspected sickle cell disease and family history of sickle
+  cell anemia. Sickle cell trait is not included.
 """
 * ^status = #draft
 * ^purpose = "Reference list of SCD diagnosis codes, covering each SCD subtype, for identifying people with SCD. It adds no conformance requirement beyond US Core."
@@ -106,6 +108,31 @@ Description: """
 * $sct#417357006   "Sickling disorder due to hemoglobin S"   // parent concept
 // Checked with $subsumes on tx.fhir.org (SNOMED CT International 20260701):
 // 417357006 does not subsume 16402000 Sickle cell trait.
+
+// Added from the USCDI+ SCD value set workbook review (2026-11-22); verified on tx.fhir.org
+* $sct#127041004  "Sickle cell-beta-thalassemia"
+* $sct#127044007  "Sickle cell-delta beta^0^-thalassemia"
+* $sct#127045008  "Sickle cell anemia with coexistent alpha-thalassemia"
+* $sct#127047000  "Sickle cell-hemoglobin Lepore disease"
+* $sct#23269001  "Double heterozygous sickling disorder"
+* $sct#234391009  "Sickle cell anemia with high hemoglobin F"
+* $sct#36472007  "Sickle cell-thalassemia disease"
+* $sct#416180004  "Hemoglobin SS disease without crisis"
+* $sct#416214006  "Sickle cell-hemoglobin D disease without crisis"
+* $sct#416290001  "Hemoglobin S sickling disorder without crisis"
+* $sct#416484003  "Sickle cell-hemoglobin E disease with crisis"
+* $sct#416638004  "Sickle cell-hemoglobin E disease without crisis"
+* $sct#416826005  "Sickle cell-thalassemia disease with crisis"
+* $sct#417048006  "Sickle cell-thalassemia disease without crisis"
+* $sct#417279003  "Hemoglobin S sickling disorder with crisis"
+* $sct#417425009  "Hemoglobin SS disease with crisis"
+* $sct#417517009  "Sickle cell-hemoglobin C disease with crisis"
+* $sct#417683006  "Sickle cell-hemoglobin C disease without crisis"
+* $sct#417748003  "Sickle cell-hemoglobin D disease with crisis"
+* $sct#440206000  "Hemoglobin SS disease with vasoocclusive crisis"
+* $sct#473131004  "Sickle cell disease suspected"
+* $sct#160320002  "Family history of sickle cell anemia"
+* $sct#783254003  "Hereditary persistence of fetal hemoglobin with sickle cell disease syndrome"
 
 
 // ==============================================================================
@@ -223,7 +250,8 @@ Title: "SCD Medication Value Set"
 Description: """
   Value set of RxNorm codes for medications used in Sickle Cell Disease
   management, including disease-modifying therapies, gene therapies, iron
-  chelation agents, prophylactic antibiotics and folic acid supplementation.
+  chelation agents, prophylactic antibiotics, folic acid supplementation,
+  analgesics, anticoagulants and antiplatelets, and epoetin alfa.
   The codes are RxNorm ingredient codes, for grouping and display. Exchanged
   medication codes follow the US Core binding (clinical drug codes).
 
@@ -257,9 +285,28 @@ Description: """
 // Folic acid supplementation (common practice; evidence is limited)
 * $rxnorm#4511   "folic acid"
 
-// TODO: Add analgesic medications commonly used in SCD pain management
-// (morphine, hydromorphone, oxycodone, acetaminophen, ketorolac)
-// with appropriate prescribing guidance notes
+
+// Added from the USCDI+ SCD value set workbook review (2026-11-22); verified on tx.fhir.org
+// Analgesics, anticoagulants and antiplatelets, and epoetin alfa
+* $rxnorm#5640  "ibuprofen"
+* $rxnorm#161  "acetaminophen"
+* $rxnorm#35827  "ketorolac"
+* $rxnorm#7052  "morphine"
+* $rxnorm#4337  "fentanyl"
+* $rxnorm#3423  "hydromorphone"
+* $rxnorm#6130  "ketamine"
+* $rxnorm#1819  "buprenorphine"
+* $rxnorm#1191  "aspirin"
+* $rxnorm#32968  "clopidogrel"
+* $rxnorm#1364430  "apixaban"
+* $rxnorm#1114195  "rivaroxaban"
+* $rxnorm#1599538  "edoxaban"
+* $rxnorm#1037042  "dabigatran etexilate"
+* $rxnorm#15202  "argatroban"
+* $rxnorm#105694  "epoetin alfa"
+* $rxnorm#5224  "heparin"
+* $rxnorm#67108  "enoxaparin"
+* $rxnorm#11289  "warfarin"
 
 
 // ==============================================================================
@@ -277,8 +324,10 @@ Description: """
   in the monitoring and management of Sickle Cell Disease. Covers CBC,
   hemoglobin fractionation, hemolysis markers, iron studies (including liver
   iron concentration), renal function, hepatic function, immunohematology
-  (antibody screen, direct antiglobulin test and red cell antigen typing), and
-  infection markers (blood culture and C-reactive protein).
+  (ABO and Rh group, antibody screen and identification, direct antiglobulin
+  test and red cell antigen typing), infection markers (blood culture and
+  C-reactive protein), lipids, urine protein and creatinine, pregnancy testing
+  (beta hCG) and the hemoglobinopathies newborn screening panel.
 """
 * ^status = #draft
 * ^purpose = "Reference list of laboratory tests commonly used in SCD care. It adds no conformance requirement beyond US Core."
@@ -355,6 +404,19 @@ Description: """
 * $loinc#1988-5  "C reactive protein [Mass/volume] in Serum or Plasma"   // CRP
 // TCD velocity (for example LOINC 11674-9) and tricuspid regurgitant jet velocity are
 // imaging measurements, not laboratory tests, so they are not listed here.
+
+// Added from the USCDI+ SCD value set workbook review (2026-11-22); verified on tx.fhir.org
+* $loinc#1751-7  "Albumin [Mass/volume] in Serum or Plasma"
+* $loinc#21198-7  "Choriogonadotropin.beta subunit [Units/volume] in Serum or Plasma"
+* $loinc#882-1  "ABO and Rh group [Type] in Blood"
+* $loinc#3094-0  "Urea nitrogen [Mass/volume] in Serum or Plasma"
+* $loinc#58410-2  "CBC panel - Blood by Automated count"
+* $loinc#2085-9  "Cholesterol in HDL [Mass/volume] in Serum or Plasma"
+* $loinc#49322-1  "Hemoglobin pattern [Interpretation] in Blood by HPLC"
+* $loinc#13457-7  "Cholesterol in LDL [Mass/volume] in Serum or Plasma by calculation"
+* $loinc#54081-5  "Hemoglobinopathies newborn screening panel"
+* $loinc#2161-8  "Creatinine [Mass/volume] in Urine"
+* $loinc#2888-6  "Protein [Mass/volume] in Urine"
 
 
 // ==============================================================================
