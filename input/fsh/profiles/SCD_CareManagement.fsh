@@ -121,7 +121,7 @@ Description: """
     regimen, crisis protocol, opioid prescribing agreements, and ED care
     instructions.
   - **Transition-of-Care Plan:** Documents the plan for transferring a
-    pediatric SCD patient to adult care, including care team changes and
+    child with SCD to adult care, including care team changes and
     patient education goals.
   - **Emergency Department Care Plan:** Provides ED providers with
     patient-specific SCD management instructions (analgesic regimen,

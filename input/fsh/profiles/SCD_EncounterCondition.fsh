@@ -111,7 +111,7 @@ Description: """
     (ICD-10-CM "with cerebral vascular involvement": D57.03, D57.213, D57.413,
     D57.433, D57.453, D57.813)
   - Priapism in SCD
-  - Fever / Sepsis in SCD patient
+  - Fever / sepsis in a person with SCD
   - Acute kidney injury in SCD
   - Acute hepatic sequestration
 
@@ -237,7 +237,7 @@ Description: """
   **Psychosocial Health Concerns:**
   - Chronic pain syndrome
   - Depression complicating SCD
-  - Anxiety disorder in SCD patient
+  - Anxiety disorder in a person with SCD
 
   For a person with SCD, the primary SCD diagnosis, including the SCD subtype,
   is expected to be on the problem list; recording it is the aim of the SCD

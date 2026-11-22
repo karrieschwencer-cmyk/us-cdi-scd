@@ -208,7 +208,7 @@ Description: """
 // ==============================================================================
 // Context: MedicationRequest (iron chelation prescriptions)
 // Purpose: Documents the clinical indication and triggering threshold for
-//          initiating iron chelation therapy in an SCD patient, supporting
+//          initiating iron chelation therapy in a person with SCD, supporting
 //          quality measurement and care documentation.
 // ==============================================================================
 
