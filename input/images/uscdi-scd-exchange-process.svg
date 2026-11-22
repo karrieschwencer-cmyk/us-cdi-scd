@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 640" width="1000" height="640" font-family="Arial, Helvetica, sans-serif" role="img" aria-labelledby="t d">
+  <title id="t">USCDI-SCD exchange process data flow</title>
+  <desc id="d">A patient visits a provider. The provider's system queries a data intermediary for the patient's record. The intermediary queries the health care organizations, SCD clinic and SCD registry that may hold the patient's records. HCO 3 reports that the patient was found, and the patient's record from HCO 3 is returned to the provider.</desc>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1f3864"/></marker>
+    <marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2e7d32"/></marker>
+    <style>
+      .box{fill:#eaf1fb;stroke:#2f5597;stroke-width:1.5}
+      .holder{fill:#f2f2f2;stroke:#595959;stroke-width:1.5}
+      .lbl{font-size:15px;fill:#1f1f1f;text-anchor:middle}
+      .sub{font-size:12px;fill:#404040;text-anchor:middle}
+      .flow{stroke:#1f3864;stroke-width:1.6;fill:none;marker-end:url(#a)}
+      .found{stroke:#2e7d32;stroke-width:2;fill:none;marker-end:url(#g)}
+      .ongoing{stroke:#9dc3e6;stroke-width:9;fill:none;stroke-linecap:round}
+      .step{font-size:12.5px;fill:#1f3864}
+      .stepg{font-size:12.5px;fill:#2e7d32;font-weight:bold}
+      .num{fill:#1f3864}
+      .numg{fill:#2e7d32}
+      .numt{font-size:12px;fill:#fff;font-weight:bold;text-anchor:middle}
+      .note{font-size:12.5px;fill:#404040}
+      .halo{paint-order:stroke;stroke:#fff;stroke-width:4px;stroke-linejoin:round}
+    </style>
+  </defs>
+
+  <!-- Patient -->
+  <circle cx="60" cy="62" r="13" fill="#2f5597"/>
+  <path d="M40 110 Q40 80 60 80 Q80 80 80 110 z" fill="#2f5597"/>
+  <text x="60" y="130" class="lbl">Patient</text>
+
+  <!-- Provider (client) -->
+  <rect x="190" y="50" width="200" height="74" rx="8" class="box"/>
+  <text x="290" y="80" class="lbl">Provider (clinic or ED)</text>
+  <text x="290" y="100" class="sub">requests the patient's records</text>
+  <text x="290" y="116" class="sub">(USCDI-SCD Client)</text>
+
+  <!-- Data intermediary -->
+  <polygon points="470,250 540,290 540,370 470,410 400,370 400,290" fill="#ffffff" stroke="#2f5597" stroke-width="5"/>
+  <text x="470" y="322" class="lbl">Data</text>
+  <text x="470" y="341" class="lbl">intermediary</text>
+
+  <!-- Data holders -->
+  <text x="890" y="28" class="sub" font-weight="bold">Systems that may hold</text>
+  <text x="890" y="43" class="sub" font-weight="bold">the patient's records</text>
+  <rect x="790" y="55" width="200" height="50" rx="6" class="holder"/><text x="890" y="85" class="lbl">HCO 1</text>
+  <rect x="790" y="155" width="200" height="50" rx="6" class="holder"/><text x="890" y="185" class="lbl">HCO 2</text>
+  <rect x="790" y="255" width="200" height="50" rx="6" class="holder"/><text x="890" y="285" class="lbl">HCO 3</text>
+  <rect x="790" y="375" width="200" height="50" rx="6" class="holder"/><text x="890" y="405" class="lbl">SCD clinic</text>
+  <rect x="790" y="495" width="200" height="50" rx="6" class="holder"/><text x="890" y="525" class="lbl">SCD registry</text>
+
+  <!-- 1. Patient visits provider -->
+  <path d="M85 87 L186 87" class="flow"/>
+  <circle cx="135" cy="70" r="9" class="num"/><text x="135" y="74" class="numt">1</text>
+  <text x="135" y="104" class="step" text-anchor="middle">Visits</text>
+
+  <!-- 2. Provider queries for the patient's record -->
+  <path d="M290 124 L290 330 L396 330" class="flow"/>
+  <circle cx="290" cy="205" r="9" class="num"/><text x="290" y="209" class="numt">2</text>
+  <text x="300" y="232" class="step halo">Provider's system queries</text>
+  <text x="300" y="248" class="step halo">for the patient's record</text>
+
+  <!-- 3. Intermediary queries each data holder -->
+  <path d="M600 300 L600 72 L786 72" class="flow"/>
+  <path d="M600 172 L786 172" class="flow"/>
+  <path d="M600 272 L786 272" class="flow"/>
+  <path d="M600 360 L600 392 L786 392" class="flow"/>
+  <path d="M600 392 L600 512 L786 512" class="flow"/>
+  <path d="M540 300 L600 300" stroke="#1f3864" stroke-width="1.6"/>
+  <path d="M540 360 L600 360" stroke="#1f3864" stroke-width="1.6"/>
+  <circle cx="650" cy="56" r="9" class="num"/><text x="650" y="60" class="numt">3</text>
+  <text x="666" y="60" class="step halo">Query for patient</text>
+
+  <!-- 4. Patient found at HCO 3 -->
+  <path d="M786 292 L548 330" class="found"/>
+  <circle cx="700" cy="296" r="9" class="numg"/><text x="700" y="300" class="numt">4</text>
+  <text x="660" y="328" class="stepg halo">Patient found</text>
+
+  <!-- 5. Record returned to the provider -->
+  <path d="M440 260 L440 87 L394 87" class="found"/>
+  <circle cx="440" cy="180" r="9" class="numg"/><text x="440" y="184" class="numt">5</text>
+  <text x="452" y="205" class="stepg halo">Patient's record</text>
+  <text x="452" y="221" class="stepg halo">from HCO 3</text>
+
+  <!-- Notes -->
+  <line x1="20" y1="568" x2="980" y2="568" stroke="#bfbfbf"/>
+  <text x="20" y="590" class="note">HCO = health care organization. The data intermediary also exchanges data with these systems on an ongoing basis.</text>
+  <text x="20" y="610" class="note">Steps 2 to 5 correspond to steps 1 and 3 of the Exchange Workflow. How records are located and how the patient is matched are open questions (OQ-1 to OQ-3).</text>
+</svg>
