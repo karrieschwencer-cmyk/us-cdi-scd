@@ -50,12 +50,13 @@ CHANGE LOG PAGE — changes.md
 **Decisions made during review of this draft**
 
 - Terminology approach: the guide adds no terminology constraints beyond
-  US Core. The SCD value sets are reference lists. Five are linked to their
+  US Core. The SCD value sets are reference lists. Six are linked to their
   profile elements as Additional Bindings with the purpose starter, which do not
   constrain the element: SCD Diagnosis and SCD Acute Complication
   (`Condition.code`), SCD Procedure (`Procedure.code`), SCD Medication
   (`Medication.code` and `MedicationRequest.medication[x]`) and SCD Laboratory
-  Panel (`Observation.code` in the Laboratory Result profile). The SCD-relevant
+  Panel (`Observation.code` in the Laboratory Result profile) and SCD Vital
+  Signs (`Observation.code` in the Vital Signs profile). The SCD-relevant
   values are maintained by ONC in the USCDI+ SCD data element lists. This
   resolves the former open question on binding strength (OQ-13, now a retired
   ID). See

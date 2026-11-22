@@ -354,6 +354,19 @@ Description: """
 * category MS
 * code MS
 * code ^short = "Vital sign LOINC code (SpO2, pain score, BP, temp, RR, HR, weight)"
+// Non-constraining reference binding (purpose starter): adds no requirement beyond
+// the US Core binding, which still applies.
+* code ^binding.extension[+].url = "http://hl7.org/fhir/tools/StructureDefinition/additional-binding"
+* code ^binding.extension[=].extension[+].url = "key"
+* code ^binding.extension[=].extension[=].valueId = "scd-vital-signs-reference"
+* code ^binding.extension[=].extension[+].url = "purpose"
+* code ^binding.extension[=].extension[=].valueCode = #starter
+* code ^binding.extension[=].extension[+].url = "valueSet"
+* code ^binding.extension[=].extension[=].valueCanonical = Canonical(SCDVitalSignsVS)
+* code ^binding.extension[=].extension[+].url = "documentation"
+* code ^binding.extension[=].extension[=].valueMarkdown = "Reference list of vital sign codes commonly used in SCD care, including the pain severity score. It does not constrain exchange; the US Core binding applies. Whether pain scores belong in this profile is an open question (OQ-22)."
+* code ^binding.extension[=].extension[+].url = "shortDoco"
+* code ^binding.extension[=].extension[=].valueString = "SCD vital signs (reference list)"
 * subject MS
 * subject only Reference(SCDPatient)
 * effective[x] MS

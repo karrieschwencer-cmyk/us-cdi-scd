@@ -107,7 +107,7 @@ Represents vital signs, with emphasis on measurements used in SCD care:
 - Blood pressure. The [ASH 2019 cardiopulmonary and kidney guideline](references.html#ash-2019-cardiopulmonary-kidney) recommends a goal below 130/80 mm Hg (as amended by its [2023 correction](references.html#ash-2019-cardiopulmonary-kidney-correction)) for adults with SCD
 - Respiratory rate. Tachypnea is one of the signs that the NHLBI 2014 report lists for evaluating acute chest syndrome
 
-Codes are listed in the [SCD Vital Signs Value Set](ValueSet-scd-vital-signs-vs.html). This is a reference list and does not constrain exchange; the US Core vital signs bindings apply. Pain scores are profiled here as vital signs, which is an open question ([OQ-22](issues.html#oq-22)).
+Codes are listed in the [SCD Vital Signs Value Set](ValueSet-scd-vital-signs-vs.html). This is a reference list, shown on the profile page as an Additional Binding, and does not constrain exchange; the US Core vital signs bindings apply. Pain scores are profiled here as vital signs, which is an open question ([OQ-22](issues.html#oq-22)).
 
 ---
 
