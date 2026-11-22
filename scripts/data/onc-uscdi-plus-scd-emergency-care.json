@@ -1,0 +1,510 @@
+{
+ "source": "https://uscdiplus.healthit.gov/uscdiplus?id=uscdi_record&table=x_g_sshh_uscdi_sub_domain&sys_id=a7e444623bdd03503cb59d0864e45a96&view=sp",
+ "retrieved": "2026-10-26",
+ "columns": [
+  "Data Element Parent",
+  "Revision",
+  "Description",
+  "Data Class",
+  "Domain"
+ ],
+ "rows": [
+  [
+   "Assessment and Plan of Treatment",
+   "8",
+   "Health professional’s conclusions and working assumptions that will guide treatment of the patient.",
+   "Care Plans",
+   "Other Use Cases"
+  ],
+  [
+   "Care Plan",
+   "3",
+   "Shared plan informed by members of a coordinated care team that details conditions, needs, and goals along with strategies for addressing them.\n\nUsage notes: Includes problems, health concerns, assessments, goals, and interventions from across care settings.\n\nExamples include but are not limited to clinical care plans, condition-specific care plans, coordinated care plan.",
+   "Care Plans",
+   "Other Use Cases"
+  ],
+  [
+   "Blood Transfusion Product Antibody",
+   "1",
+   "Blood protein produced in response to and counteracting an antigen.",
+   "Biologically Derived Product",
+   "Other Use Cases"
+  ],
+  [
+   "Blood Transfusion Product Antigen",
+   "1",
+   "Proteins or sugars expressed on red blood cells used to determine an individuals' blood group.",
+   "Biologically Derived Product",
+   "Other Use Cases"
+  ],
+  [
+   "Blood Transfusion Product Blood Type",
+   "1",
+   "Classification of blood based on the presence and absence of antibodies and inherited antigenic substances on the surface of red blood cells.",
+   "Biologically Derived Product",
+   "Other Use Cases"
+  ],
+  [
+   "Blood Transfusion Product Name",
+   "1",
+   "The name of the blood product originating from a human intended to be transplanted or infused into another (possibly the same) human (e.g., red blood cells, platelets, fresh frozen plasma).",
+   "Biologically Derived Product",
+   "Other Use Cases"
+  ],
+  [
+   "BMI Percentile (2 - 20 years)",
+   "5",
+   "BMI-for-age percentile shows how a child's weight compares to that of other children of the same age and sex.",
+   "Vital Signs",
+   "Other Use Cases"
+  ],
+  [
+   "Body Height",
+   "6",
+   "The vertical measurement of an individual's stature from the feet to the top of the head when standing upright.",
+   "Vital Signs",
+   "Other Use Cases"
+  ],
+  [
+   "Body Temperature",
+   "6",
+   "Temperature is a measure of the patient's ability to generate and get rid of heat.",
+   "Vital Signs",
+   "Other Use Cases"
+  ],
+  [
+   "Body Weight",
+   "6",
+   "The measurement of weight without heavy items located on the person.",
+   "Vital Signs",
+   "Other Use Cases"
+  ],
+  [
+   "Diastolic Blood Pressure",
+   "6",
+   "Diastolic Blood Pressure",
+   "Vital Signs",
+   "Other Use Cases"
+  ],
+  [
+   "Pulse Oximetry",
+   "6",
+   "Pulse oximetry is a test used to measure the oxygen level (oxygen saturation) of the blood.",
+   "Vital Signs",
+   "Other Use Cases"
+  ],
+  [
+   "Systolic Blood Pressure",
+   "6",
+   "Systolic Blood Pressure",
+   "Vital Signs",
+   "Other Use Cases"
+  ],
+  [
+   "Care Team Member Identifier",
+   "7",
+   "Sequence of characters used to uniquely refer to a member of the care team. Examples include but are not limited to National Provider Identifier (NPI) and National Council of State Boards of Nursing Identifier (NCSBN ID).",
+   "Care Team Members",
+   "Other Use Cases"
+  ],
+  [
+   "Care Team Member Location",
+   "7",
+   "Place where care is delivered by a care team member. Examples include but are not limited to clinic address, and location description.",
+   "Care Team Members",
+   "Other Use Cases"
+  ],
+  [
+   "Care Team Member Name",
+   "7",
+   "Word or phrase that constitutes the distinctive designation of a care team member. Examples include but are not limited to given name, middle name, surname, and name suffix.",
+   "Care Team Members",
+   "Other Use Cases"
+  ],
+  [
+   "Care Team Member Role",
+   "7",
+   "Responsibility of an individual within the care team. Examples include but are not limited to primary care physician and caregiver.",
+   "Care Team Members",
+   "Other Use Cases"
+  ],
+  [
+   "Care Team Member Telecom",
+   "7",
+   "Phone or email contact information for a care team member.",
+   "Care Team Members",
+   "Other Use Cases"
+  ],
+  [
+   "Clinical Test",
+   "8",
+   "Non-imaging or non-laboratory test.\nExamples include but are not limited to electrocardiogram (ECG), visual acuity exam, macular exam, and graded exercise testing (GXT).",
+   "Clinical Tests",
+   "Other Use Cases"
+  ],
+  [
+   "Clinical Test Result/Report",
+   "7",
+   "Findings of clinical tests.",
+   "Clinical Tests",
+   "Other Use Cases"
+  ],
+  [
+   "Current Address",
+   "6",
+   "Place where a person is located or may be contacted.",
+   "Patient Demographics/Information",
+   "Other Use Cases"
+  ],
+  [
+   "Date of Birth",
+   "6",
+   "Known or estimated year, month, and day of the patient's birth.",
+   "Patient Demographics/Information",
+   "Other Use Cases"
+  ],
+  [
+   "Date of Death",
+   "4",
+   "Known or estimated year, month, and day of the patient's death.",
+   "Patient Demographics/Information",
+   "Other Use Cases"
+  ],
+  [
+   "Email Address",
+   "7",
+   "Unique identifier of an individual's email account that is used to send and receive email messages.",
+   "Patient Demographics/Information",
+   "Other Use Cases"
+  ],
+  [
+   "Ethnicity",
+   "6",
+   "Patient's self-identification as Hispanic/ Latino or Non- Hispanic/ Non-Latino.",
+   "Patient Demographics/Information",
+   "Other Use Cases"
+  ],
+  [
+   "First Name",
+   "6",
+   "A personal name used before a family name.",
+   "Patient Demographics/Information",
+   "Other Use Cases"
+  ],
+  [
+   "Last Name",
+   "6",
+   "Portion of one's personal name indicating familial or communal ties.",
+   "Patient Demographics/Information",
+   "Other Use Cases"
+  ],
+  [
+   "Middle Name (Including middle initial)",
+   "5",
+   "A second or subsequent given name, between the first given name and the family name or surname.",
+   "Patient Demographics/Information",
+   "Other Use Cases"
+  ],
+  [
+   "Name Suffix",
+   "7",
+   "Name component following family name that may be used to describe a person's position in a family.",
+   "Patient Demographics/Information",
+   "Other Use Cases"
+  ],
+  [
+   "Phone Number",
+   "7",
+   "Numbers and symbols to contact an individual when using a phone.",
+   "Patient Demographics/Information",
+   "Other Use Cases"
+  ],
+  [
+   "Previous Name",
+   "7",
+   "Any first and last name an individual may have used in the past for any reason.",
+   "Patient Demographics/Information",
+   "Other Use Cases"
+  ],
+  [
+   "Race",
+   "6",
+   "An individual’s response to the race question based upon self-identification.",
+   "Patient Demographics/Information",
+   "Other Use Cases"
+  ],
+  [
+   "Sex",
+   "3",
+   "Documentation of a specific instance of sex.",
+   "Patient Demographics/Information",
+   "Other Use Cases"
+  ],
+  [
+   "Date of Diagnosis",
+   "7",
+   "Date of first determination by a qualified professional of the presence of a problem or condition affecting a patient.",
+   "Problems",
+   "Other Use Cases"
+  ],
+  [
+   "Date of Resolution",
+   "6",
+   "Date of subsiding or termination of a symptom, problem or condition.",
+   "Problems",
+   "Other Use Cases"
+  ],
+  [
+   "Condition Evidence",
+   "1",
+   "Supporting evidence that is the basis for determining the condition.",
+   "Problems",
+   "Other Use Cases"
+  ],
+  [
+   "Problems",
+   "8",
+   "Condition, diagnosis, or reason for seeking medical attention.",
+   "Problems",
+   "Other Use Cases"
+  ],
+  [
+   "SDOH Problems/Health Concerns",
+   "7",
+   "Social Determinants of Health-related health concerns, conditions, or diagnoses.\nExamples include but are not limited to homelessness and food insecurity.",
+   "Problems",
+   "Other Use Cases"
+  ],
+  [
+   "Diagnostic Imaging Test",
+   "8",
+   "Tests that generate visual images and require interpretation by qualified professionals.\n\nExamples include but are not limited to computed tomography-head, radiograph-chest, and ultrasound-pelvis.",
+   "Diagnostic Imaging",
+   "Other Use Cases"
+  ],
+  [
+   "Diagnostic Imaging Report",
+   "7",
+   "Interpreted results of imaging tests.\nUsage Note: Includes both structured and unstructured (narrative) components.",
+   "Diagnostic Imaging",
+   "Other Use Cases"
+  ],
+  [
+   "Blood Genotype",
+   "1",
+   "The genetic makeup of an individual's blood group, specifically the blood type and Rh factor.",
+   "Genomics",
+   "Other Use Cases"
+  ],
+  [
+   "Variant Interpretation",
+   "1",
+   "The categorical or clinical assessment of the genetic variant data, where interpretation is necessary to fully understand the significance.",
+   "Genomics",
+   "Other Use Cases"
+  ],
+  [
+   "Disability Status",
+   "5",
+   "Assessment of a patient's physical, cognitive, or psychiatric disabilities.\n\nExamples include but are not limited to American Community Survey, Veterans RAND Health Survey, and Patient-Reported Outcomes Measurement Information System (PROMIS).",
+   "Health Status Assessments",
+   "Other Use Cases"
+  ],
+  [
+   "Pain Assessment",
+   "1",
+   "Evaluation of a patient's emotional distress or physical discomfort utilizing a standardized instrument.",
+   "Health Status Assessments",
+   "Other Use Cases"
+  ],
+  [
+   "Functional Status",
+   "8",
+   "Assessment of a person’s ability to perform activities of daily living and activities across other situations and settings.\n\nExamples include but are not limited to Functional Assessment Standardized Items (FASI) and Timed Up and Go (TUG).",
+   "Health Status Assessments",
+   "Other Use Cases"
+  ],
+  [
+   "Health Concerns",
+   "7",
+   "Health-related issue or worry. Examples include but are not limited to weight gain and cancer risk.",
+   "Health Status Assessments",
+   "Other Use Cases"
+  ],
+  [
+   "Mental/Cognitive Status",
+   "6",
+   "Assessment or screening for the presence of a mental or behavioral problem. Examples include but are not limited to Confusion Assessment Method (CAM) and Patient Health Questionnaire (PHQ).",
+   "Health Status Assessments",
+   "Other Use Cases"
+  ],
+  [
+   "Dose",
+   "7",
+   "Amount of a medication for each administration.",
+   "Medications",
+   "Other Use Cases"
+  ],
+  [
+   "Dose Unit of Measure",
+   "7",
+   "Units of measure of a medication. Examples include but are not limited to milligram (mg) and milliliter (mL).",
+   "Medications",
+   "Other Use Cases"
+  ],
+  [
+   "Medications",
+   "8",
+   "Pharmacologic agent used in the diagnosis, cure, mitigation, treatment, or prevention of disease.",
+   "Medications",
+   "Other Use Cases"
+  ],
+  [
+   "Drug Class Allergy Intolerance",
+   "6",
+   "Pharmacologic category for an agent believed to cause a harmful or undesired physiologic response following exposure.",
+   "Allergies and Intolerances",
+   "Other Use Cases"
+  ],
+  [
+   "Medication Allergy Intolerance",
+   "7",
+   "Pharmacologic agent believed to cause a harmful or undesired physiologic response following exposure.",
+   "Allergies and Intolerances",
+   "Other Use Cases"
+  ],
+  [
+   "Non-Medication Allergy Intolerance",
+   "7",
+   "Non-pharmacologic agent believed to cause a harmful or undesired physiologic response following exposure.\nExamples include but are not limited to latex, eggs, pollen, and peanuts.",
+   "Allergies and Intolerances",
+   "Other Use Cases"
+  ],
+  [
+   "Reaction",
+   "7",
+   "Harmful or undesired physiologic response following exposure to a substance",
+   "Allergies and Intolerances",
+   "Other Use Cases"
+  ],
+  [
+   "Encounter Diagnosis",
+   "7",
+   "Coded diagnoses associated with an episode of care.",
+   "Encounter Information",
+   "Other Use Cases"
+  ],
+  [
+   "Encounter Disposition",
+   "7",
+   "Place or setting where the patient went after a hospital stay or encounter.",
+   "Encounter Information",
+   "Other Use Cases"
+  ],
+  [
+   "Encounter Identifier",
+   "7",
+   "Sequence of characters by which an encounter is known.",
+   "Encounter Information",
+   "Other Use Cases"
+  ],
+  [
+   "Encounter Location",
+   "8",
+   "Place where a patient’s care is delivered.",
+   "Encounter Information",
+   "Other Use Cases"
+  ],
+  [
+   "Encounter Time",
+   "7",
+   "Date/times related to an encounter.\nExamples include but are not limited to scheduled appointment time, check in time, and start and stop times.",
+   "Encounter Information",
+   "Other Use Cases"
+  ],
+  [
+   "Encounter Type",
+   "5",
+   "Category of health care service. Examples include but are not limited to office visit, telephone assessment, and home visit.",
+   "Encounter Information",
+   "Other Use Cases"
+  ],
+  [
+   "Facility Address",
+   "6",
+   "Physical location of available services or resources.",
+   "Facility Information",
+   "Other Use Cases"
+  ],
+  [
+   "Facility Identifier",
+   "7",
+   "Sequence of characters representing a physical place of available services or resources.",
+   "Facility Information",
+   "Other Use Cases"
+  ],
+  [
+   "Facility Name",
+   "7",
+   "Word or words by which a facility is known.",
+   "Facility Information",
+   "Other Use Cases"
+  ],
+  [
+   "Facility Type",
+   "7",
+   "Category of service or resource available in a location.\n\nExamples include but are not limited to hospital, laboratory, pharmacy, ambulatory clinic, long-term and post-acute care facility, and food pantry.",
+   "Facility Information",
+   "Other Use Cases"
+  ],
+  [
+   "Immunizations",
+   "8",
+   "Vaccine product administered, planned, or reported.",
+   "Immunizations",
+   "Other Use Cases"
+  ],
+  [
+   "Patient Goals",
+   "8",
+   "Desired outcomes of patient’s care.\n\nExamples include but are not limited to blood pressure control, functional ability, and nutrition.",
+   "Goals and Preferences",
+   "Other Use Cases"
+  ],
+  [
+   "Performance Time",
+   "7",
+   "Time and/or date an activity is performed.\n\nExamples include but are not limited to vaccine or medication administration times, surgery start time, time ultrasound performed, and laboratory specimen collection time.",
+   "Procedures",
+   "Other Use Cases"
+  ],
+  [
+   "Blood Transfusion Date & Time",
+   "1",
+   "Date that the blood product originating from a human was or is intended to be transplanted or infused into another (possibly the same) human (e.g., red blood cells, platelets, fresh frozen plasma).",
+   "Procedures",
+   "Other Use Cases"
+  ],
+  [
+   "Procedures",
+   "9",
+   "Activity performed for or on a patient as part of the provision of care.",
+   "Procedures",
+   "Other Use Cases"
+  ],
+  [
+   "Tests",
+   "9",
+   "Analysis of specimens derived from humans which provide information for the diagnosis, prevention, treatment of disease, or assessment of health.",
+   "Laboratory",
+   "Other Use Cases"
+  ],
+  [
+   "Values/Results",
+   "7",
+   "Documented findings of a tested specimen including structured and unstructured components",
+   "Laboratory",
+   "Other Use Cases"
+  ]
+ ]
+}

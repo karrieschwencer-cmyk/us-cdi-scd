@@ -27,19 +27,26 @@ const PAGE = path.join(ROOT, 'input', 'pagecontent', 'data-element-mapping.md');
 const CSV = path.join(ROOT, 'input', 'images', 'uscdi-scd-data-element-mapping.csv');
 const CANON = 'http://hl7.org/fhir/us/uscdi-scd/';
 
-// Use cases from the Scope and Usage page (key profiles per use case).
+// Use cases per profile, derived from the USCDI+ SCD Data Elements mapping
+// (uscdi-plus.md): a profile belongs to a use case if it carries a data element
+// on ONC's list for that use case. Keep in sync with the Scope and Usage page.
+const BOTH = ['SCD Diagnosis', 'SCD Emergency Care'];
 const USE_CASES = {
-  'uscdi-scd-patient': ['SCD Diagnosis', 'SCD Emergency Care'],
-  'uscdi-scd-condition-problems': ['SCD Diagnosis'],
-  'uscdi-scd-laboratory-result': ['SCD Diagnosis', 'SCD Emergency Care'],
-  'uscdi-scd-practitioner': ['SCD Diagnosis'],
-  'uscdi-scd-practitionerrole': ['SCD Diagnosis'],
-  'uscdi-scd-organization': ['SCD Diagnosis'],
+  'uscdi-scd-patient': BOTH,
+  'uscdi-scd-practitioner': BOTH,
+  'uscdi-scd-practitionerrole': BOTH,
+  'uscdi-scd-location': BOTH,
+  'uscdi-scd-condition-problems': BOTH,
+  'uscdi-scd-condition-encounter-diagnosis': BOTH,
+  'uscdi-scd-laboratory-result': BOTH,
+  'uscdi-scd-medication': BOTH,
+  'uscdi-scd-medicationrequest': BOTH,
+  'uscdi-scd-careplan': BOTH,
   'uscdi-scd-encounter': ['SCD Emergency Care'],
-  'uscdi-scd-condition-encounter-diagnosis': ['SCD Emergency Care'],
   'uscdi-scd-vital-signs': ['SCD Emergency Care'],
-  'uscdi-scd-medicationrequest': ['SCD Emergency Care'],
-  'uscdi-scd-careplan': ['SCD Emergency Care'],
+  'uscdi-scd-allergyintolerance': ['SCD Emergency Care'],
+  'uscdi-scd-procedure': ['SCD Emergency Care'],
+  'uscdi-scd-biologicallyderivedproduct': ['SCD Emergency Care'],
 };
 
 // Display order (matches the Profiles page).
@@ -133,10 +140,50 @@ const typeText = (e) => (e.type || []).map((t) => {
   return t.code;
 }).join(' | ');
 
+// VSAC value set titles from the local package cache, so bindings show a title
+// rather than a bare OID. Version 0.19.0 (the dependency) is tried first; a
+// value set it lacks is looked up in other cached VSAC versions.
+const VS_PACKAGES = ['us.nlm.vsac#0.19.0']
+  .concat(fs.existsSync(PKG) ? fs.readdirSync(PKG).filter((n) => /^us\.nlm\.vsac#/.test(n) && n !== 'us.nlm.vsac#0.19.0').sort().reverse() : []);
+function valueSetTitle(url) {
+  const base = url.split('|')[0];
+  if (titles[base]) return titles[base];
+  const id = base.split('/').pop();
+  if (!/^\d+(\.\d+)+$/.test(id)) return id; // only bare OIDs need a title
+  for (const pkg of VS_PACKAGES) {
+    const f = path.join(PKG, pkg, 'package', `ValueSet-${id}.json`);
+    if (!fs.existsSync(f)) continue;
+    const vs = readJson(f);
+    if (vs.url === base && (vs.title || vs.name)) return (titles[base] = vs.title || vs.name);
+  }
+  return id;
+}
+
 const bindingText = (e) => {
   if (!e.binding?.valueSet) return '';
-  return `${shortName(e.binding.valueSet)} (${e.binding.strength})`;
+  return `${valueSetTitle(e.binding.valueSet)} (${e.binding.strength})`;
 };
+
+// USCDI+ SCD data elements per profile element, from the mapping used for the
+// USCDI+ SCD Data Elements page (generate-uscdi-plus.js). An element path that
+// is not itself listed in the chart is attached to its nearest listed parent.
+const { M: USCDI_PLUS_MAP, UC: USCDI_PLUS_UC, U: US_CORE_COVERAGE } = require('./generate-uscdi-plus.js');
+function uscdiPlusIndex(profileId, rootType, rowIds) {
+  const index = new Map();
+  for (const [name, [where, elems]] of Object.entries(USCDI_PLUS_MAP)) {
+    const ids = [...where.matchAll(/StructureDefinition-(uscdi-scd-[a-z-]+)\.html/g)].map((m) => m[1]);
+    if (!ids.includes(profileId)) continue;
+    for (const [, p] of elems.matchAll(/`([A-Z][A-Za-z]+(?:\.[A-Za-z[\]:-]+)+)`/g)) {
+      if (p.split('.')[0] !== rootType) continue;
+      let id = p;
+      while (id.includes('.') && !rowIds.has(id)) id = id.substring(0, id.lastIndexOf('.'));
+      if (!rowIds.has(id)) continue;
+      if (!index.has(id)) index.set(id, new Set());
+      index.get(id).add(name);
+    }
+  }
+  return index;
+}
 
 const SKIP = /\.(id|meta|implicitRules|language|text|contained|modifierExtension)$/;
 
@@ -162,22 +209,32 @@ function selectElements(sd, diff) {
 }
 
 const esc = (s) => String(s ?? '').replace(/\|/g, '\\|').replace(/\r?\n+/g, ' ').trim();
+
+// US Core marks additional USCDI requirements by starting the short description
+// with "ADDITIONAL USCDI:", written in Unicode mathematical bold letters. The
+// marker is removed from the description and shown in its own column instead.
+const USCDI_MARKER = /(?:\u{1D5D4}\u{1D5D7}\u{1D5D7}\u{1D5DC}\u{1D5E7}\u{1D5DC}\u{1D5E2}\u{1D5E1}\u{1D5D4}\u{1D5DF}\s+\u{1D5E8}\u{1D5E6}\u{1D5D6}\u{1D5D7}\u{1D5DC}|ADDITIONAL USCDI)\s*:\s*/gu;
+const additionalUscdi = (s) => (String(s ?? '').match(USCDI_MARKER) ? 'Y' : '');
+const stripMarker = (s) => String(s ?? '').replace(USCDI_MARKER, '').trim();
 const csvCell = (s) => `"${String(s ?? '').replace(/"/g, '""').replace(/\r?\n+/g, ' ').trim()}"`;
 
 // --- Build ------------------------------------------------------------------
+// The last four columns are left blank: a gap analysis worksheet for each
+// organization to fill in.
+const WORKSHEET = ['', '', '', ''];
 const csvRows = [[
-  'USCDI+ SCD Data Element (TODO)', 'Use Case', 'Profile', 'Element', 'Cardinality',
-  'Must Support', 'Type', 'Binding', 'Source', 'Description',
+  'USCDI+ SCD Data Element', 'Use Case', 'Profile', 'Element', 'Cardinality',
+  'Must Support', 'Type', 'Binding', 'Source', 'Additional USCDI (US Core)', 'Description',
+  'Source System', 'Source Field', 'Available (Y/N/Partial)', 'Notes',
 ]];
 
-let md = `This page maps the data elements in this guide to their FHIR profiles and elements. It lists every Must Support element and every required element for each profile, with its cardinality, data type and terminology binding. It is generated from the profile definitions, so it always matches them.
+let md = `<a id="top"></a>
+
+This page maps the data elements in this guide to their FHIR profiles and elements. It lists every Must Support element and every required element for each profile, with its cardinality, data type and terminology binding. It is generated from the profile definitions, so it always matches them.
 
 **Download:** [uscdi-scd-data-element-mapping.csv](uscdi-scd-data-element-mapping.csv) (opens in Excel)
 
-**Source data elements:** ONC publishes the USCDI+ Sickle Cell Disease data element lists on the USCDI+ site: [SCD Diagnosis](https://uscdiplus.healthit.gov/uscdiplus?id=uscdi_record&table=x_g_sshh_uscdi_sub_domain&sys_id=84d4c4a23bdd03503cb59d0864e45a2a&view=sp) and [SCD Emergency Care](https://uscdiplus.healthit.gov/uscdiplus?id=uscdi_record&table=x_g_sshh_uscdi_sub_domain&sys_id=a7e444623bdd03503cb59d0864e45a96&view=sp). For where each of those data elements is represented in this guide, see [USCDI+ SCD Data Elements](uscdi-plus.html).
-
-<!-- TODO: Fill the "USCDI+ SCD Data Element" column in the CSV from the mapping
-     on the USCDI+ SCD Data Elements page. -->
+**Source data elements:** ONC publishes the USCDI+ Sickle Cell Disease data element lists on the USCDI+ site: [SCD Diagnosis](https://uscdiplus.healthit.gov/uscdiplus?id=uscdi_record&table=x_g_sshh_uscdi_sub_domain&sys_id=84d4c4a23bdd03503cb59d0864e45a2a&view=sp) and [SCD Emergency Care](https://uscdiplus.healthit.gov/uscdiplus?id=uscdi_record&table=x_g_sshh_uscdi_sub_domain&sys_id=a7e444623bdd03503cb59d0864e45a96&view=sp). For where each of those data elements is represented in this guide, see [USCDI+ SCD Data Elements](uscdi-plus.html). The CSV download also has a "USCDI+ SCD Data Element" column that names, for each profile element, the USCDI+ SCD data elements it carries, taken from that page. The CSV also lists the elements of the US Core profiles that this guide uses directly for some USCDI+ SCD data elements (Source **US Core**). Its last four columns (Source System, Source Field, Available (Y/N/Partial) and Notes) are blank, for use as a gap analysis worksheet.
 
 ### How to read this chart
 
@@ -189,6 +246,7 @@ let md = `This page maps the data elements in this guide to their FHIR profiles 
 | Type | The data type. For references, the profiles the reference must conform to. |
 | Binding | The value set the element's codes come from, and the binding strength. |
 | Source | **USCDI-SCD** if this guide adds or changes the element; **Inherited** if it comes unchanged from the parent profile (usually US Core). |
+| Additional USCDI (US Core) | **Y** means US Core marks the element as an additional USCDI requirement. See [Additional USCDI Requirement](glossary.html). |
 
 Elements inherited from US Core are included so testers can see every requirement in one place. Child elements are listed only when their parent is listed.
 
@@ -206,20 +264,24 @@ for (const id of profileIds) {
   const useCases = (USE_CASES[id] || []).join(', ') || 'Supporting';
   const examples = (examplesByProfile[sd.url] || []).map((x) => `[${x.id}](${x.type}-${x.id}.html)`).join(', ');
 
+  const rows = selectElements(sd, diff);
+  const msAdded = rows.filter((e) => e.mustSupport && !parentById.get(e.id)?.mustSupport).length;
   md += `---\n\n### [${sd.title}](StructureDefinition-${id}.html)\n\n`;
+  md += `${rows.length} element${rows.length === 1 ? '' : 's'}; ${msAdded} Must Support added by this guide.\n\n`;
   md += `**Parent:** ${parent} &nbsp;·&nbsp; **Use case:** ${useCases}${examples ? ` &nbsp;·&nbsp; **Examples:** ${examples}` : ''}\n\n`;
   md += '<div style="overflow-x:auto" markdown="1">\n\n';
-  md += '| Element | Card. | MS | Type | Binding | Source | Description |\n|---|---|---|---|---|---|---|\n';
+  md += '| Element | Card. | MS | Type | Binding | Source | Additional USCDI (US Core) | Description |\n|---|---|---|---|---|---|---|---|\n';
 
-  for (const e of selectElements(sd, diff)) {
+  const plus = uscdiPlusIndex(id, sd.type, new Set(rows.map((e) => e.id)));
+  for (const e of rows) {
     for (const t of e.type || []) if (t.code === 'Extension') (t.profile || []).forEach((p) => usedExtensions.add(p.split('|')[0]));
     const source = changedFromParent(e, parentById) ? 'USCDI-SCD' : 'Inherited';
     const card = `${e.min}..${e.max}`;
     const ms = e.mustSupport ? 'Y' : '';
-    md += `| \`${esc(e.id)}\` | ${card} | ${ms} | ${esc(typeText(e))} | ${esc(bindingText(e))} | ${source} | ${esc(e.short)} |\n`;
-    csvRows.push(['', useCases, sd.title, e.id, card, ms, typeText(e), bindingText(e), source, e.short]);
+    md += `| \`${esc(e.id)}\` | ${card} | ${ms} | ${esc(typeText(e))} | ${esc(bindingText(e))} | ${source} | ${additionalUscdi(e.short)} | ${esc(stripMarker(e.short))} |\n`;
+    csvRows.push([[...(plus.get(e.id) || [])].sort().join('; '), useCases, sd.title, e.id, card, ms, typeText(e), bindingText(e), source, additionalUscdi(e.short), stripMarker(e.short), ...WORKSHEET]);
   }
-  md += '\n</div>\n\n';
+  md += '\n</div>\n\n[Back to top](#top)\n\n';
 }
 
 // Extension detail: sub-elements of the SCD extensions used by the profiles.
@@ -236,12 +298,40 @@ for (const url of [...usedExtensions].filter((u) => extensions[u]).sort()) {
   for (const p of parts) {
     const card = `${p.e.min}..${p.e.max}`;
     md += `| ${link} | ${p.name} | ${card} | ${esc(p.v ? typeText(p.v) : '')} | ${esc(p.v ? bindingText(p.v) : '')} | ${esc(p.e.short || sd.title)} |\n`;
-    csvRows.push(['', '', sd.title, `${sd.id}:${p.name}`, card, '', p.v ? typeText(p.v) : '', p.v ? bindingText(p.v) : '', 'USCDI-SCD', p.e.short || sd.title]);
+    csvRows.push(['', '', sd.title, `${sd.id}:${p.name}`, card, '', p.v ? typeText(p.v) : '', p.v ? bindingText(p.v) : '', 'USCDI-SCD', additionalUscdi(p.e.short), stripMarker(p.e.short || sd.title), ...WORKSHEET]);
   }
 }
-md += '\n</div>\n';
+md += '\n</div>\n\n[Back to top](#top)\n';
+
+// CSV only: elements of the US Core profiles that this guide uses directly for
+// some USCDI+ SCD data elements (coverage "US Core profile used directly" on the
+// USCDI+ SCD Data Elements page). Values come from the US Core 8.0.1 snapshots.
+const USE_CASE_NAMES = { A: 'SCD Diagnosis', B: 'SCD Emergency Care' };
+const usCoreRows = new Map(); // "profileUrl|elementPath" -> { url, path, names, uc }
+for (const [name, [where, elems, cov]] of Object.entries(USCDI_PLUS_MAP)) {
+  if (cov !== US_CORE_COVERAGE) continue;
+  const urls = [...where.matchAll(/STU8\.0\.1\/StructureDefinition-([a-z-]+)\.html/g)]
+    .map((m) => `http://hl7.org/fhir/us/core/StructureDefinition/${m[1]}`);
+  const paths = [...elems.matchAll(/`([A-Z][A-Za-z]+(?:\.[A-Za-z[\]:-]+)+)`/g)].map((m) => m[1]);
+  for (const url of urls) {
+    const sd = loadParent(url);
+    if (!sd) throw new Error(`US Core profile not found in the package cache: ${url}`);
+    for (const p of paths.filter((x) => x.split('.')[0] === sd.type)) {
+      const key = `${url}|${p}`;
+      if (!usCoreRows.has(key)) usCoreRows.set(key, { sd, path: p, names: new Set(), uc: new Set() });
+      usCoreRows.get(key).names.add(name);
+      (USCDI_PLUS_UC[name] || []).forEach((u) => usCoreRows.get(key).uc.add(u));
+    }
+  }
+}
+for (const { sd, path: p, names, uc } of [...usCoreRows.values()].sort((a, b) => (a.sd.title + a.path).localeCompare(b.sd.title + b.path))) {
+  const e = sd.snapshot.element.find((x) => x.id === p);
+  if (!e) throw new Error(`Element ${p} not found in ${sd.url}`);
+  csvRows.push([[...names].sort().join('; '), [...uc].sort().map((u) => USE_CASE_NAMES[u]).join(', '), sd.title, p,
+    `${e.min}..${e.max}`, e.mustSupport ? 'Y' : '', typeText(e), bindingText(e), 'US Core', additionalUscdi(e.short), stripMarker(e.short), ...WORKSHEET]);
+}
 
 fs.writeFileSync(PAGE, md, 'utf8');
 fs.mkdirSync(path.dirname(CSV), { recursive: true });
 fs.writeFileSync(CSV, '﻿' + csvRows.map((r) => r.map(csvCell).join(',')).join('\r\n') + '\r\n', 'utf8');
-console.log(`Wrote ${path.relative(ROOT, PAGE)} and ${path.relative(ROOT, CSV)} (${csvRows.length - 1} rows, ${profileIds.length} profiles, ${usedExtensions.size} extensions).`);
+console.log(`Wrote ${path.relative(ROOT, PAGE)} and ${path.relative(ROOT, CSV)} (${csvRows.length - 1} rows, ${profileIds.length} profiles, ${usedExtensions.size} extensions, ${usCoreRows.size} US Core rows).`);

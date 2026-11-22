@@ -1,0 +1,272 @@
+{
+ "source": "https://uscdiplus.healthit.gov/uscdiplus?id=uscdi_record&table=x_g_sshh_uscdi_sub_domain&sys_id=84d4c4a23bdd03503cb59d0864e45a2a&view=sp",
+ "retrieved": "2026-10-26",
+ "columns": [
+  "Data Element Parent",
+  "Revision",
+  "Description",
+  "Data Class",
+  "Domain"
+ ],
+ "rows": [
+  [
+   "Assessment and Plan of Treatment",
+   "8",
+   "Health professional’s conclusions and working assumptions that will guide treatment of the patient.",
+   "Care Plans",
+   "Other Use Cases"
+  ],
+  [
+   "Author",
+   "6",
+   "Actor that created or revised the data.\n\nUsage note: The actor may be a provider, a patient, a device, an outside medical record, or something else. The source of the information can be used to form assessments about its quality, reliability, trustworthiness, or can indicate where to go to determine the origins of the information.",
+   "Provenance",
+   "Other Use Cases"
+  ],
+  [
+   "Author Organization",
+   "5",
+   "Organization associated with author.",
+   "Provenance",
+   "Other Use Cases"
+  ],
+  [
+   "Author Role",
+   "5",
+   "Category of actor that participated in the creation or revision of data.\n\nUsage note: The source of the information can be used to form assessments about its quality, reliability, trustworthiness, or can indicate where to go to determine the origins of the information.\n\nExamples include but are not limited to provider, patient, family member, and device.",
+   "Provenance",
+   "Other Use Cases"
+  ],
+  [
+   "Author Time Stamp",
+   "6",
+   "Date and time of author action.",
+   "Provenance",
+   "Other Use Cases"
+  ],
+  [
+   "Care Team Member Identifier",
+   "7",
+   "Sequence of characters used to uniquely refer to a member of the care team. Examples include but are not limited to National Provider Identifier (NPI) and National Council of State Boards of Nursing Identifier (NCSBN ID).",
+   "Care Team Members",
+   "Other Use Cases"
+  ],
+  [
+   "Care Team Member Location",
+   "7",
+   "Place where care is delivered by a care team member. Examples include but are not limited to clinic address, and location description.",
+   "Care Team Members",
+   "Other Use Cases"
+  ],
+  [
+   "Care Team Member Name",
+   "7",
+   "Word or phrase that constitutes the distinctive designation of a care team member. Examples include but are not limited to given name, middle name, surname, and name suffix.",
+   "Care Team Members",
+   "Other Use Cases"
+  ],
+  [
+   "Care Team Member Role",
+   "7",
+   "Responsibility of an individual within the care team. Examples include but are not limited to primary care physician and caregiver.",
+   "Care Team Members",
+   "Other Use Cases"
+  ],
+  [
+   "Care Team Member Telecom",
+   "7",
+   "Phone or email contact information for a care team member.",
+   "Care Team Members",
+   "Other Use Cases"
+  ],
+  [
+   "Current Address",
+   "6",
+   "Place where a person is located or may be contacted.",
+   "Patient Demographics/Information",
+   "Other Use Cases"
+  ],
+  [
+   "Date of Birth",
+   "6",
+   "Known or estimated year, month, and day of the patient's birth.",
+   "Patient Demographics/Information",
+   "Other Use Cases"
+  ],
+  [
+   "Date of Death",
+   "4",
+   "Known or estimated year, month, and day of the patient's death.",
+   "Patient Demographics/Information",
+   "Other Use Cases"
+  ],
+  [
+   "Email Address",
+   "7",
+   "Unique identifier of an individual's email account that is used to send and receive email messages.",
+   "Patient Demographics/Information",
+   "Other Use Cases"
+  ],
+  [
+   "Ethnicity",
+   "6",
+   "Patient's self-identification as Hispanic/ Latino or Non- Hispanic/ Non-Latino.",
+   "Patient Demographics/Information",
+   "Other Use Cases"
+  ],
+  [
+   "First Name",
+   "6",
+   "A personal name used before a family name.",
+   "Patient Demographics/Information",
+   "Other Use Cases"
+  ],
+  [
+   "Last Name",
+   "6",
+   "Portion of one's personal name indicating familial or communal ties.",
+   "Patient Demographics/Information",
+   "Other Use Cases"
+  ],
+  [
+   "Middle Name (Including middle initial)",
+   "5",
+   "A second or subsequent given name, between the first given name and the family name or surname.",
+   "Patient Demographics/Information",
+   "Other Use Cases"
+  ],
+  [
+   "Name Suffix",
+   "7",
+   "Name component following family name that may be used to describe a person's position in a family.",
+   "Patient Demographics/Information",
+   "Other Use Cases"
+  ],
+  [
+   "Phone Number",
+   "7",
+   "Numbers and symbols to contact an individual when using a phone.",
+   "Patient Demographics/Information",
+   "Other Use Cases"
+  ],
+  [
+   "Previous Name",
+   "7",
+   "Any first and last name an individual may have used in the past for any reason.",
+   "Patient Demographics/Information",
+   "Other Use Cases"
+  ],
+  [
+   "Race",
+   "6",
+   "An individual’s response to the race question based upon self-identification.",
+   "Patient Demographics/Information",
+   "Other Use Cases"
+  ],
+  [
+   "Sex",
+   "3",
+   "Documentation of a specific instance of sex.",
+   "Patient Demographics/Information",
+   "Other Use Cases"
+  ],
+  [
+   "Date of Diagnosis",
+   "7",
+   "Date of first determination by a qualified professional of the presence of a problem or condition affecting a patient.",
+   "Problems",
+   "Other Use Cases"
+  ],
+  [
+   "Date of Resolution",
+   "6",
+   "Date of subsiding or termination of a symptom, problem or condition.",
+   "Problems",
+   "Other Use Cases"
+  ],
+  [
+   "Condition Evidence",
+   "1",
+   "Supporting evidence that is the basis for determining the condition.",
+   "Problems",
+   "Other Use Cases"
+  ],
+  [
+   "Problems",
+   "8",
+   "Condition, diagnosis, or reason for seeking medical attention.",
+   "Problems",
+   "Other Use Cases"
+  ],
+  [
+   "Blood Genotype",
+   "1",
+   "The genetic makeup of an individual's blood group, specifically the blood type and Rh factor.",
+   "Genomics",
+   "Other Use Cases"
+  ],
+  [
+   "Variant Interpretation",
+   "1",
+   "The categorical or clinical assessment of the genetic variant data, where interpretation is necessary to fully understand the significance.",
+   "Genomics",
+   "Other Use Cases"
+  ],
+  [
+   "Dose",
+   "7",
+   "Amount of a medication for each administration.",
+   "Medications",
+   "Other Use Cases"
+  ],
+  [
+   "Medications",
+   "8",
+   "Pharmacologic agent used in the diagnosis, cure, mitigation, treatment, or prevention of disease.",
+   "Medications",
+   "Other Use Cases"
+  ],
+  [
+   "Facility Address",
+   "6",
+   "Physical location of available services or resources.",
+   "Facility Information",
+   "Other Use Cases"
+  ],
+  [
+   "Facility Identifier",
+   "7",
+   "Sequence of characters representing a physical place of available services or resources.",
+   "Facility Information",
+   "Other Use Cases"
+  ],
+  [
+   "Facility Name",
+   "7",
+   "Word or words by which a facility is known.",
+   "Facility Information",
+   "Other Use Cases"
+  ],
+  [
+   "Facility Type",
+   "7",
+   "Category of service or resource available in a location.\n\nExamples include but are not limited to hospital, laboratory, pharmacy, ambulatory clinic, long-term and post-acute care facility, and food pantry.",
+   "Facility Information",
+   "Other Use Cases"
+  ],
+  [
+   "Tests",
+   "9",
+   "Analysis of specimens derived from humans which provide information for the diagnosis, prevention, treatment of disease, or assessment of health.",
+   "Laboratory",
+   "Other Use Cases"
+  ],
+  [
+   "Values/Results",
+   "7",
+   "Documented findings of a tested specimen including structured and unstructured components",
+   "Laboratory",
+   "Other Use Cases"
+  ]
+ ]
+}
