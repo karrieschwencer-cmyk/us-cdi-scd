@@ -64,6 +64,8 @@ Alias: $us-core-medication           = http://hl7.org/fhir/us/core/StructureDefi
 Alias: $us-core-procedure            = http://hl7.org/fhir/us/core/StructureDefinition/us-core-procedure
 Alias: $us-core-observation-lab      = http://hl7.org/fhir/us/core/StructureDefinition/us-core-observation-lab
 Alias: $us-core-vital-signs          = http://hl7.org/fhir/us/core/StructureDefinition/us-core-vital-signs
+Alias: $us-core-goal                 = http://hl7.org/fhir/us/core/StructureDefinition/us-core-goal
+Alias: $us-core-careteam             = http://hl7.org/fhir/us/core/StructureDefinition/us-core-careteam
 
 // -----------------------------------------------------------------------
 // US Core Extensions
@@ -112,5 +114,4 @@ Alias: $mrn       = urn:oid:2.16.840.1.113883.4.3   // placeholder; use system-s
 
 // Base URI for VSAC-hosted value sets
 // Pattern: http://cts.nlm.nih.gov/fhir/ValueSet/{OID}
-// TODO: Replace local VS canonical URIs with VSAC URIs once OIDs are assigned.
 Alias: $vsac = http://cts.nlm.nih.gov/fhir/ValueSet

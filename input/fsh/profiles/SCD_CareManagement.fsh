@@ -14,7 +14,7 @@
 // SCDAllergyIntolerance
 // ==============================================================================
 // Extends: US Core Allergy Intolerance Profile
-// Purpose: Represents drug allergies and transfusion reactions in SCD patients.
+// Purpose: Represents drug allergies and transfusion reactions in people with SCD.
 //
 // SCD-specific allergy context:
 //   - Drug allergies: NSAIDs (ibuprofen, ketorolac), opioids, penicillin,
@@ -22,8 +22,8 @@
 //   - Transfusion reactions: hemolytic transfusion reactions (immediate and
 //     delayed), febrile non-hemolytic reactions, allergic/urticarial reactions,
 //     anaphylaxis to blood products
-//   - Note: Alloimmunization (red cell antibody formation) is a critical
-//     complication of chronic transfusion therapy in SCD. While alloantibodies
+//   - Note: Alloimmunization (red cell antibody formation) is a complication
+//     of transfusion therapy in SCD (ASH 2020 transfusion guideline). While alloantibodies
 //     are technically not "allergies," clinically relevant alloantibodies
 //     SHOULD be documented and may be represented here or as a separate
 //     Observation profile. See also: SCDObservationLaboratoryResult.
@@ -39,27 +39,29 @@ Description: """
   patients with Sickle Cell Disease. This profile extends the
   [US Core AllergyIntolerance Profile](http://hl7.org/fhir/us/core/STU8.0.1/StructureDefinition-us-core-allergyintolerance.html).
 
-  SCD patients are at elevated risk for:
-  - **Drug allergies/reactions:** NSAIDs (commonly prescribed for pain but may
-    cause renal toxicity in SCD), opioids, penicillin (prophylaxis for
+  Allergies and adverse reactions relevant to SCD care include:
+  - **Drug allergies/reactions:** NSAIDs (can be nephrotoxic; the
+    [NHLBI 2014 expert panel report](references.html#nhlbi-2014) notes acute
+    renal failure with NSAID exposure in sickle cell nephropathy), opioids, penicillin (prophylaxis for
     asplenic patients), hydroxyurea, iron chelation agents
   - **Transfusion reactions:** Including hemolytic transfusion reactions (a
     life-threatening complication), febrile non-hemolytic transfusion reactions,
     allergic reactions, and transfusion-related acute lung injury (TRALI)
 
   Clinically significant red cell alloantibodies (e.g., anti-E, anti-C,
-  anti-Kell, anti-Jka) that arise from chronic transfusion SHOULD be documented.
-  Systems SHOULD provide a mechanism to link AllergyIntolerance entries for
-  transfusion reactions to the causative BiologicallyDerivedProduct encounter.
+  anti-Kell, anti-Jka) that arise from chronic transfusion are clinically
+  important; antibody screen and identification results can be sent as
+  USCDI-SCD Laboratory Results. FHIR R4 AllergyIntolerance has no element that
+  links a transfusion reaction to the blood product involved.
 """
 
 * ^status = #draft
+* ^purpose = "Records allergies and intolerances relevant to SCD care, such as drug or blood product reactions, for the SCD Emergency Care use case."
 * ^experimental = false
-* ^date = "2025-01-01"
 * ^publisher = "HL7 International / Public Health"
 * ^jurisdiction = urn:iso:std:iso:3166#US "United States of America"
 
-// Inherited Must Support from US Core AllergyIntolerance
+// Must Support (US Core requirements, plus any added by this guide) from US Core AllergyIntolerance
 * clinicalStatus MS
 * verificationStatus MS
 * type MS
@@ -69,7 +71,7 @@ Description: """
 * code ^short = "Allergen or substance causing reaction (drug, blood product)"
 * code ^comment = """
   For SCD drug allergies, code SHOULD use RxNorm. For transfusion reactions,
-  code MAY reference the blood product type using ISBT 128 or SNOMED CT.
+  code MAY reference the blood product type using SNOMED CT.
 """
 * patient MS
 * patient only Reference(SCDPatient)
@@ -84,7 +86,7 @@ Description: """
 // SCDCarePlan
 // ==============================================================================
 // Extends: US Core CarePlan Profile
-// Purpose: Represents disease management care plans for SCD patients.
+// Purpose: Represents disease management care plans for people with SCD.
 //
 // SCD care plans may include:
 //   - Chronic transfusion therapy schedule (frequency, target HbS %)
@@ -110,8 +112,8 @@ Description: """
   in SCD include:
 
   - **Chronic Transfusion Therapy Plan:** Defines transfusion schedule,
-    target pre-transfusion HbS percentage (typically <30% for stroke
-    prevention), extended antigen matching requirements, and iron chelation
+    target pre-transfusion HbS percentage (for example, below 30% for
+    secondary stroke prevention in children; [ASH 2020 cerebrovascular guideline](references.html#ash-2020-cerebrovascular)), extended antigen matching requirements, and iron chelation
     monitoring triggers.
   - **Hydroxyurea Management Plan:** Documents starting dose, escalation
     schedule, target HbF or ANC, monitoring intervals, and adherence goals.
@@ -125,20 +127,20 @@ Description: """
     patient-specific SCD management instructions (analgesic regimen,
     transfusion thresholds, care escalation criteria).
 
-  The `CarePlan.text` narrative SHALL contain a human-readable summary of the
-  care plan. Structured `activity` entries SHOULD reference ServiceRequest,
+  The `CarePlan.text` narrative (Must Support in US Core) SHOULD contain a
+  human-readable summary of the care plan. Structured `activity` entries SHOULD reference ServiceRequest,
   MedicationRequest, and other resources where available.
 """
 
 * ^status = #draft
+* ^purpose = "Records the patient's SCD care plan, such as hydroxyurea therapy or a chronic transfusion program, for the SCD Diagnosis use case."
 * ^experimental = false
-* ^date = "2025-01-01"
 * ^publisher = "HL7 International / Public Health"
 * ^jurisdiction = urn:iso:std:iso:3166#US "United States of America"
 
-// Inherited Must Support from US Core CarePlan
+// Must Support (US Core requirements, plus any added by this guide) from US Core CarePlan
 * text MS
-* text ^short = "Human-readable SCD care plan narrative (SHALL be present)"
+* text ^short = "Human-readable SCD care plan narrative"
 * status MS
 * intent MS
 * category MS
@@ -205,12 +207,12 @@ Description: """
 """
 
 * ^status = #draft
+* ^purpose = "Records orders for SCD care, such as a transfusion order; it supports the other profiles in both use cases."
 * ^experimental = false
-* ^date = "2025-01-01"
 * ^publisher = "HL7 International / Public Health"
 * ^jurisdiction = urn:iso:std:iso:3166#US "United States of America"
 
-// Inherited Must Support from US Core ServiceRequest
+// Must Support (US Core requirements, plus any added by this guide) from US Core ServiceRequest
 * status MS
 * intent MS
 * category MS
@@ -262,41 +264,65 @@ Description: """
 
   **Disease-Modifying Therapies:**
   - Hydroxyurea (Droxia®, Siklos®) — increases fetal hemoglobin (HbF),
-    reduces VOC frequency; first-line therapy for HbSS/HbS-Beta0
-  - L-glutamine (Endari®) — thought to reduce oxidative stress (mechanism not
-    fully understood); FDA-approved for SCD in patients aged 5 years and older
-  - Crizanlizumab (Adakveo®) — anti-P-selectin antibody; FDA-approved to
+    reduces VOC frequency; recommended for HbSS and HbS-beta0 thalassemia
+    ([NHLBI 2014 expert panel report](references.html#nhlbi-2014);
+    [SIKLOS](references.html#label-hydroxyurea-siklos) and
+    [DROXIA](references.html#label-hydroxyurea-droxia) labeling)
+  - L-glutamine (Endari®) — indicated to reduce the acute complications of
+    SCD in patients aged 5 years and older
+    ([ENDARI labeling](references.html#label-l-glutamine))
+  - Crizanlizumab (Adakveo®) — anti-P-selectin antibody; indicated to
     reduce VOC frequency in patients aged 16 years and older
+    ([ADAKVEO labeling](references.html#label-crizanlizumab))
   - Voxelotor (Oxbryta®) — increases Hgb oxygen affinity (NOTE: withdrawn from
-    the market in September 2024; include for historical medication records)
-  - Exagamglogene autotemcel (Casgevy®) — gene editing therapy; FDA-approved
-    December 2023 for patients aged 12 and older with recurrent VOC
-  - Lovotibeglogene autotemcel (Lyfgenia®) — gene addition therapy; FDA-approved
-    December 2023 for patients aged 12 and older with a history of VOC
+    the market in September 2024 ([FDA](references.html#fda-voxelotor-withdrawal));
+    include for historical medication records)
+  - Exagamglogene autotemcel (Casgevy®) — gene editing therapy; first
+    approved in 2023; current labeling covers patients aged 2 years and older
+    with recurrent VOC ([CASGEVY labeling](references.html#label-exagamglogene))
+  - Lovotibeglogene autotemcel (Lyfgenia®) — gene addition therapy; first
+    approved in 2023; indicated for patients aged 12 years and older with a
+    history of vaso-occlusive events ([LYFGENIA labeling](references.html#label-lovotibeglogene))
 
   **Iron Chelation Therapy:**
   - Deferasirox (Exjade®, Jadenu®) — oral; for transfusional iron overload
+    ([Exjade labeling](references.html#label-deferasirox))
   - Deferoxamine (Desferal®) — parenteral (subcutaneous/IV infusion)
-  - Deferiprone (Ferriprox®) — oral; FDA-approved since 2021 for transfusional
-    iron overload due to SCD or other anemias
+  - Deferiprone (Ferriprox®) — oral; indicated for transfusional iron overload
+    in patients aged 8 years and older with thalassemia syndromes, SCD or
+    other anemias ([FERRIPROX labeling](references.html#label-deferiprone))
 
   **Prophylaxis:**
-  - Penicillin — NHLBI 2014 recommends oral penicillin prophylaxis for
-    children with HbSS until age 5. Amoxicillin is a commonly used alternative.
+  - Penicillin — the [NHLBI 2014 expert panel report](references.html#nhlbi-2014)
+    recommends oral penicillin prophylaxis twice daily until age 5 in all
+    children with HbSS.
 
-  All medications SHALL use RxNorm codes where available. NDC codes MAY be
+  US Core requires RxNorm codes (extensible binding). NDC codes MAY be
   included as an additional coding for dispensed medications.
 """
 
 * ^status = #draft
+* ^purpose = "Identifies medications used in SCD care, coded with RxNorm, for the SCD Diagnosis and SCD Emergency Care use cases."
 * ^experimental = false
-* ^date = "2025-01-01"
 * ^publisher = "HL7 International / Public Health"
 * ^jurisdiction = urn:iso:std:iso:3166#US "United States of America"
 
-// Inherited Must Support from US Core Medication
+// Must Support (US Core requirements, plus any added by this guide) from US Core Medication
 * code MS
-* code ^short = "SCD medication code (RxNorm preferred)"
+* code ^short = "SCD medication code (RxNorm; US Core extensible binding)"
+// Non-constraining reference binding (purpose open): adds no requirement beyond
+// the US Core binding, which still applies.
+* code ^binding.extension[+].url = "http://hl7.org/fhir/tools/StructureDefinition/additional-binding"
+* code ^binding.extension[=].extension[+].url = "key"
+* code ^binding.extension[=].extension[=].valueId = "scd-medication-reference"
+* code ^binding.extension[=].extension[+].url = "purpose"
+* code ^binding.extension[=].extension[=].valueCode = #open
+* code ^binding.extension[=].extension[+].url = "valueSet"
+* code ^binding.extension[=].extension[=].valueCanonical = Canonical(SCDMedicationVS)
+* code ^binding.extension[=].extension[+].url = "documentation"
+* code ^binding.extension[=].extension[=].valueMarkdown = "Reference list of RxNorm ingredient codes for medications commonly used in SCD care, for grouping and display. It does not constrain exchange; the US Core binding applies. ONC maintains the SCD-relevant values for the USCDI+ Medications data element in USCDI+ ([SCD Diagnosis](https://uscdiplus.healthit.gov/uscdiplus?id=uscdi_record&table=x_g_sshh_uscdi_sub_domain&sys_id=84d4c4a23bdd03503cb59d0864e45a2a&view=sp) and [SCD Emergency Care](https://uscdiplus.healthit.gov/uscdiplus?id=uscdi_record&table=x_g_sshh_uscdi_sub_domain&sys_id=a7e444623bdd03503cb59d0864e45a96&view=sp) lists)."
+* code ^binding.extension[=].extension[+].url = "shortDoco"
+* code ^binding.extension[=].extension[=].valueString = "SCD medications (USCDI+)"
 * code ^comment = """
   Use RxNorm clinical drug codes (ingredient + strength + form) where available.
   NDC codes MAY be provided as additional coding.
@@ -334,8 +360,8 @@ Description: """
 """
 
 * ^status = #draft
+* ^purpose = "Records prescriptions for SCD treatment, such as hydroxyurea, crizanlizumab, L-glutamine and iron chelation, for the SCD Diagnosis and SCD Emergency Care use cases."
 * ^experimental = false
-* ^date = "2025-01-01"
 * ^publisher = "HL7 International / Public Health"
 * ^jurisdiction = urn:iso:std:iso:3166#US "United States of America"
 
@@ -343,11 +369,24 @@ Description: """
 * extension contains SCDIronChelationIndicationExtension named scd-iron-chelation-indication 0..1 MS
 * extension[scd-iron-chelation-indication] ^short = "Indication and trigger for iron chelation therapy"
 
-// Inherited Must Support from US Core MedicationRequest
+// Must Support (US Core requirements, plus any added by this guide) from US Core MedicationRequest
 * status MS
 * intent MS
 * medication[x] MS
-* medication[x] ^short = "SCD medication (RxNorm preferred)"
+// Non-constraining reference binding (purpose open): adds no requirement beyond
+// the US Core binding, which still applies.
+* medication[x] ^binding.extension[+].url = "http://hl7.org/fhir/tools/StructureDefinition/additional-binding"
+* medication[x] ^binding.extension[=].extension[+].url = "key"
+* medication[x] ^binding.extension[=].extension[=].valueId = "scd-medication-reference"
+* medication[x] ^binding.extension[=].extension[+].url = "purpose"
+* medication[x] ^binding.extension[=].extension[=].valueCode = #open
+* medication[x] ^binding.extension[=].extension[+].url = "valueSet"
+* medication[x] ^binding.extension[=].extension[=].valueCanonical = Canonical(SCDMedicationVS)
+* medication[x] ^binding.extension[=].extension[+].url = "documentation"
+* medication[x] ^binding.extension[=].extension[=].valueMarkdown = "Reference list of RxNorm ingredient codes for medications commonly used in SCD care, for grouping and display. It does not constrain exchange; the US Core binding applies. ONC maintains the SCD-relevant values for the USCDI+ Medications data element in USCDI+ ([SCD Diagnosis](https://uscdiplus.healthit.gov/uscdiplus?id=uscdi_record&table=x_g_sshh_uscdi_sub_domain&sys_id=84d4c4a23bdd03503cb59d0864e45a2a&view=sp) and [SCD Emergency Care](https://uscdiplus.healthit.gov/uscdiplus?id=uscdi_record&table=x_g_sshh_uscdi_sub_domain&sys_id=a7e444623bdd03503cb59d0864e45a96&view=sp) lists)."
+* medication[x] ^binding.extension[=].extension[+].url = "shortDoco"
+* medication[x] ^binding.extension[=].extension[=].valueString = "SCD medications (USCDI+)"
+* medication[x] ^short = "SCD medication (RxNorm; US Core extensible binding)"
 * medicationReference only Reference(SCDMedication)
 * subject MS
 * subject only Reference(SCDPatient)

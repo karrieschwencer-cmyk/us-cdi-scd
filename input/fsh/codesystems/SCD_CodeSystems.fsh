@@ -20,6 +20,8 @@
 // standard HL7 observation-category code system.
 // ==============================================================================
 
+// TODO: Review against LOINC Part codes and US Core observation categories before
+//       finalizing. Consider submitting concepts to HL7 THO or LOINC.
 CodeSystem: SCDObservationCategoryCS
 Id: scd-observation-category-cs
 Title: "SCD Observation Category Code System"
@@ -28,11 +30,9 @@ Description: """
   Cell Disease clinical data exchange. These categories supplement the
   standard HL7 observation-category codes (laboratory, vital-signs, etc.)
   with SCD-specific sub-categories.
-
-  Open item: Review against LOINC Part codes and US Core observation categories
-  before finalizing. Consider submitting concepts to HL7 THO or LOINC.
 """
 * ^status = #draft
+* ^purpose = "Categories that group SCD observations, used in addition to the standard HL7 observation categories."
 * ^experimental = false
 * ^caseSensitive = true
 * ^content = #complete
@@ -47,7 +47,7 @@ Description: """
 * #iron-overload-assessment
     "Iron Overload Assessment"
     "Observation category for measurements used to assess transfusional iron
-     overload in SCD patients on chronic transfusion therapy, including serum
+     overload in people with SCD on chronic transfusion therapy, including serum
      ferritin, liver iron concentration (LIC), and transferrin saturation."
 
 * #transfusion-medicine
@@ -76,6 +76,9 @@ Description: """
 // transfusion therapy. These supplement ISBT 128 and SNOMED CT.
 // ==============================================================================
 
+// TODO: Map to ISBT 128 processing codes and SNOMED CT where equivalents exist.
+//       Consider ISBT 128 as the primary coding system and use this only for
+//       concepts not yet covered.
 CodeSystem: SCDBloodProductProcessingCS
 Id: scd-blood-product-processing-cs
 Title: "SCD Blood Product Processing Code System"
@@ -84,85 +87,86 @@ Description: """
   relevant to transfusion therapy in Sickle Cell Disease. Covers extended
   antigen matching criteria, processing modifiers, and product selection
   requirements specific to SCD care.
-
-  Open item: Map to ISBT 128 processing codes and SNOMED CT where equivalents
-  exist. Consider ISBT 128 as the primary coding system and use this only
-  for concepts not yet covered.
 """
 * ^status = #draft
+* ^purpose = "Codes for blood product processing steps and attributes relevant to SCD transfusion that this guide could not find in standard terminologies."
 * ^experimental = false
 * ^caseSensitive = true
 * ^content = #complete
 * ^jurisdiction = urn:iso:std:iso:3166#US "United States of America"
 
 // Processing Modifiers
+// NHLBI 2014: most red cell units given to people with SCD in the United States are
+// leukoreduced; benefits documented in other populations include fewer febrile
+// non-hemolytic reactions, less CMV transmission and less HLA alloimmunization.
 * #leukoreduced
     "Leukoreduced"
-    "Blood product from which the majority of leukocytes have been removed
-     by filtration (leukoreduction). Standard of care for SCD patients to
-     reduce febrile non-hemolytic transfusion reactions, CMV transmission
-     risk, and HLA alloimmunization."
+    "Blood product from which most leukocytes have been removed by filtration
+     (leukoreduction)."
 
+// TODO: Cite a transfusion guideline for the indications for irradiated
+//       components (for example, HSCT recipients) before listing them here.
 * #irradiated
     "Irradiated"
     "Blood product that has been exposed to gamma radiation or X-ray irradiation
      to inactivate T-lymphocytes, preventing transfusion-associated graft-vs-host
-     disease (TA-GvHD). Indicated for specific groups, such as HSCT candidates
-     and recipients and patients with congenital cellular immunodeficiency;
-     not routinely required for SCD."
+     disease (TA-GvHD)."
 
 * #cmv-negative
     "CMV Seronegative"
     "Blood product collected from a donor who tested negative for cytomegalovirus
-     (CMV) antibodies. Used for selected patients per institutional policy;
-     leukoreduced products are widely accepted as CMV-safe."
+     (CMV) antibodies."
 
+// NHLBI 2014: many institutions provide sickle-negative units to people with SCD, so
+// that HbS% can be tracked when HbS targets are used.
 * #sickle-cell-negative
     "Sickle Cell Trait Negative (HbS Negative)"
     "Blood product confirmed to be from a donor who does not carry the sickle
-     hemoglobin trait (HbAS). HbS-negative units are standard for transfusions
-     in SCD patients so that HbS% can be monitored after transfusion."
+     hemoglobin trait (HbAS)."
 
 // Extended Antigen Matching
 * #antigen-matched-C-neg
     "C Antigen Negative (Rh system)"
     "Blood product confirmed negative for the C antigen (Rh2) in the Rhesus
-     blood group system. Used in antigen-matched transfusion for SCD patients
+     blood group system. Used in antigen-matched transfusion for people with SCD
      who are C antigen negative."
 
 * #antigen-matched-E-neg
     "E Antigen Negative (Rh system)"
     "Blood product confirmed negative for the E antigen (Rh3) in the Rhesus
-     blood group system. Used in antigen-matched transfusion for SCD patients
+     blood group system. Used in antigen-matched transfusion for people with SCD
      who are E antigen negative."
 
 * #antigen-matched-K-neg
     "K Antigen Negative (Kell system)"
     "Blood product confirmed negative for the K antigen (KEL1) in the Kell
-     blood group system. Used in antigen-matched transfusion for SCD patients
+     blood group system. Used in antigen-matched transfusion for people with SCD
      who are K antigen negative."
 
 * #antigen-matched-Fya-neg
     "Fya Antigen Negative (Duffy system)"
     "Blood product confirmed negative for the Fya antigen (FY1) in the Duffy
-     blood group system. Used in antigen-matched transfusion for SCD patients
+     blood group system. Used in antigen-matched transfusion for people with SCD
      who are Fya antigen negative."
 
 * #antigen-matched-Jkb-neg
     "Jkb Antigen Negative (Kidd system)"
     "Blood product confirmed negative for the Jkb antigen (JK2) in the Kidd
-     blood group system. Used in antigen-matched transfusion for SCD patients
+     blood group system. Used in antigen-matched transfusion for people with SCD
      who are Jkb antigen negative."
 
 * #extended-phenotype-matched
     "Extended Phenotype Matched"
     "Blood product matched for an extended panel of red cell antigens beyond
-     ABO/Rh D and the Rh (C, E) and K antigens recommended for all SCD
-     transfusions (ASH 2020), such as Fy, Jk and S antigens for alloimmunized
-     patients, per the prescribing institution's SCD transfusion protocol."
+     ABO/RhD and the Rh (C, E or C/c, E/e) and K antigens that the ASH 2020
+     transfusion guideline recommends for patients with SCD receiving
+     transfusions, such as Jk, Fy and S antigens, per the prescribing
+     institution's SCD transfusion protocol."
 
+// TODO: Cite a source for the 7-day cutoff and for institutional preferences
+//       for fresher units in red cell exchange, or retire this code.
 * #fresh-blood
     "Fresh Blood (≤7 days)"
-    "Blood product collected within 7 days of planned transfusion date. Some
-     institutional protocols prefer fresher units for automated red cell
-     exchange; national guidelines do not set a storage-age requirement."
+    "Blood product collected within 7 days of planned transfusion date. Neither
+     the NHLBI 2014 expert panel report nor the ASH 2020 transfusion guideline
+     makes a recommendation on red cell storage age."

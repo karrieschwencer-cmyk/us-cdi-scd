@@ -13,7 +13,7 @@
 // SCDEncounter
 // ==============================================================================
 // Extends: US Core Encounter Profile
-// Purpose: Represents encounters for SCD patients, including:
+// Purpose: Represents encounters for people with SCD, including:
 //   - Emergency department visits (vaso-occlusive crisis, ACS)
 //   - Outpatient hematology visits
 //   - Day hospital / infusion center visits (transfusion)
@@ -29,7 +29,7 @@ Description: """
   with Sickle Cell Disease. This profile extends the
   [US Core Encounter Profile](http://hl7.org/fhir/us/core/STU8.0.1/StructureDefinition-us-core-encounter.html).
 
-  SCD patients frequently present across multiple care settings. Common SCD
+  People with SCD frequently present across multiple care settings. Common SCD
   encounter types include:
   - **Emergency visits** for vaso-occlusive crisis (VOC), acute chest syndrome
     (ACS), fever/infection, splenic sequestration, and priapism
@@ -40,18 +40,19 @@ Description: """
   - **Inpatient admissions** for severe VOC, ACS, stroke, or hematopoietic
     stem cell transplantation (HSCT)
 
-  The reason for encounter (reasonCode or reasonReference) SHOULD reference an
-  USCDI-SCD Condition where applicable. The encounter SHOULD be linked to
-  BiologicallyDerivedProduct resources when a blood product transfusion occurs.
+  The reason for encounter (reasonCode or reasonReference) SHOULD reference a
+  USCDI-SCD Condition where applicable. Blood products transfused during the
+  encounter are linked through the transfusion order (ServiceRequest), because
+  FHIR R4 Encounter has no element for them.
 """
 
 * ^status = #draft
+* ^purpose = "Records SCD-related encounters, such as emergency department visits for vaso-occlusive crisis, for the SCD Emergency Care use case."
 * ^experimental = false
-* ^date = "2025-01-01"
 * ^publisher = "HL7 International / Public Health"
 * ^jurisdiction = urn:iso:std:iso:3166#US "United States of America"
 
-// Inherited Must Support from US Core Encounter
+// Must Support (US Core requirements, plus any added by this guide) from US Core Encounter
 * identifier MS
 * status MS
 * class MS
@@ -76,9 +77,7 @@ Description: """
 * serviceProvider MS
 * serviceProvider only Reference(SCDOrganization)
 
-// SCD-specific constraint: encounter type SHOULD use SCD-relevant codes
-// TODO: Bind reasonCode to SCDEncounterReasonVS (value set to be defined)
-// * reasonCode from SCDEncounterReasonVS (extensible)
+// TODO: Decide whether to bind reasonCode to an SCD encounter reason value set (OQ-15).
 
 
 // ==============================================================================
@@ -116,22 +115,59 @@ Description: """
   - Acute kidney injury in SCD
   - Acute hepatic sequestration
 
-  Clinical systems SHALL populate `condition.code` using SNOMED CT or ICD-10-CM
-  codes. Both code systems SHOULD be provided via `condition.code.coding`.
+  `Condition.code` follows the US Core binding (preferred: SNOMED CT or
+  ICD-10-CM). Where both codes are available, sending both as separate
+  `Condition.code.coding` entries helps receiving systems.
 """
 
 * ^status = #draft
+* ^purpose = "Records diagnoses made during an SCD-related encounter, such as an acute complication, for the SCD Emergency Care use case."
 * ^experimental = false
-* ^date = "2025-01-01"
 * ^publisher = "HL7 International / Public Health"
 * ^jurisdiction = urn:iso:std:iso:3166#US "United States of America"
 
-// Inherited Must Support from US Core Condition Encounter Diagnosis
+// Must Support (US Core requirements, plus any added by this guide) from US Core Condition Encounter Diagnosis
 * clinicalStatus MS
 * verificationStatus MS
 * category MS
 * code MS
 * code ^short = "Acute SCD diagnosis code (SNOMED CT or ICD-10-CM)"
+// Restates the US Core additional binding so it is kept when this profile adds its own.
+* code ^binding.extension[+].url = "http://hl7.org/fhir/tools/StructureDefinition/additional-binding"
+* code ^binding.extension[=].extension[+].url = "key"
+* code ^binding.extension[=].extension[=].valueId = "us-core-condition-code-current"
+* code ^binding.extension[=].extension[+].url = "purpose"
+* code ^binding.extension[=].extension[=].valueCode = #current
+* code ^binding.extension[=].extension[+].url = "valueSet"
+* code ^binding.extension[=].extension[=].valueCanonical = "http://hl7.org/fhir/us/core/ValueSet/us-core-condition-code-current"
+* code ^binding.extension[=].extension[+].url = "documentation"
+* code ^binding.extension[=].extension[=].valueMarkdown = "US Core uses the current additional binding for encoding newly recorded, non-legacy problem list items, health concerns and diagnosis"
+* code ^binding.extension[=].extension[+].url = "shortDoco"
+* code ^binding.extension[=].extension[=].valueString = "Required for new records"
+// Non-constraining reference binding (purpose open): adds no requirement beyond
+// the US Core binding, which still applies.
+* code ^binding.extension[+].url = "http://hl7.org/fhir/tools/StructureDefinition/additional-binding"
+* code ^binding.extension[=].extension[+].url = "key"
+* code ^binding.extension[=].extension[=].valueId = "scd-diagnosis-reference"
+* code ^binding.extension[=].extension[+].url = "purpose"
+* code ^binding.extension[=].extension[=].valueCode = #open
+* code ^binding.extension[=].extension[+].url = "valueSet"
+* code ^binding.extension[=].extension[=].valueCanonical = Canonical(SCDDiagnosisVS)
+* code ^binding.extension[=].extension[+].url = "documentation"
+* code ^binding.extension[=].extension[=].valueMarkdown = "Reference list of SCD diagnosis codes commonly used in SCD care. It does not constrain exchange; the US Core binding applies. ONC maintains the SCD-relevant values for the USCDI+ Problems data element in USCDI+ ([SCD Diagnosis](https://uscdiplus.healthit.gov/uscdiplus?id=uscdi_record&table=x_g_sshh_uscdi_sub_domain&sys_id=84d4c4a23bdd03503cb59d0864e45a2a&view=sp) and [SCD Emergency Care](https://uscdiplus.healthit.gov/uscdiplus?id=uscdi_record&table=x_g_sshh_uscdi_sub_domain&sys_id=a7e444623bdd03503cb59d0864e45a96&view=sp) lists)."
+* code ^binding.extension[=].extension[+].url = "shortDoco"
+* code ^binding.extension[=].extension[=].valueString = "SCD diagnoses (USCDI+)"
+* code ^binding.extension[+].url = "http://hl7.org/fhir/tools/StructureDefinition/additional-binding"
+* code ^binding.extension[=].extension[+].url = "key"
+* code ^binding.extension[=].extension[=].valueId = "scd-acute-complication-reference"
+* code ^binding.extension[=].extension[+].url = "purpose"
+* code ^binding.extension[=].extension[=].valueCode = #open
+* code ^binding.extension[=].extension[+].url = "valueSet"
+* code ^binding.extension[=].extension[=].valueCanonical = Canonical(SCDAcuteComplicationVS)
+* code ^binding.extension[=].extension[+].url = "documentation"
+* code ^binding.extension[=].extension[=].valueMarkdown = "Reference list of acute SCD complication codes commonly used in SCD care. It does not constrain exchange; the US Core binding applies. ONC maintains the SCD-relevant values for the USCDI+ Problems data element in USCDI+ ([SCD Diagnosis](https://uscdiplus.healthit.gov/uscdiplus?id=uscdi_record&table=x_g_sshh_uscdi_sub_domain&sys_id=84d4c4a23bdd03503cb59d0864e45a2a&view=sp) and [SCD Emergency Care](https://uscdiplus.healthit.gov/uscdiplus?id=uscdi_record&table=x_g_sshh_uscdi_sub_domain&sys_id=a7e444623bdd03503cb59d0864e45a96&view=sp) lists)."
+* code ^binding.extension[=].extension[+].url = "shortDoco"
+* code ^binding.extension[=].extension[=].valueString = "SCD acute complications (USCDI+)"
 * code ^comment = """
   For SCD encounter diagnoses, code SHOULD use SNOMED CT or ICD-10-CM.
   Where both are available, both SHOULD be included as coding repetitions.
@@ -146,9 +182,8 @@ Description: """
 * abatement[x] MS
 * recordedDate MS
 * evidence MS
-// TODO: Terminologist to review after the terminology meeting: this guidance on
-// linking supporting lab results through evidence.detail, and whether evidence.detail
-// (rather than evidence.id) should be Must Support.
+// TODO: Project team to decide whether evidence.detail, rather than evidence.id, should be
+// Must Support (OQ-11).
 * evidence ^comment = """
   To link the diagnosis to the laboratory results it is based on (for example,
   a hemoglobin fractionation that confirms the SCD subtype), reference the
@@ -180,7 +215,7 @@ Description: """
   Cell Disease. This profile extends the
   [US Core Condition Problems and Health Concerns Profile](http://hl7.org/fhir/us/core/STU8.0.1/StructureDefinition-us-core-condition-problems-health-concerns.html).
 
-  Key problem list entries for SCD patients represented by this profile:
+  Key problem list entries for people with SCD represented by this profile:
 
   **SCD Diagnosis and Subtype:**
   - Sickle cell anemia (HbSS): SNOMED 127040003; ICD-10-CM D57.1 (without crisis)
@@ -204,25 +239,63 @@ Description: """
   - Depression complicating SCD
   - Anxiety disorder in SCD patient
 
-  The primary SCD diagnosis, including the SCD subtype, SHALL be included on the problem list
-  for all patients within scope of this IG.
+  For a person with SCD, the primary SCD diagnosis, including the SCD subtype,
+  is expected to be on the problem list; recording it is the aim of the SCD
+  Diagnosis use case.
 """
 
 * ^status = #draft
+* ^purpose = "Records the SCD diagnosis with its subtype, and SCD complications, on the problem list, for the SCD Diagnosis and SCD Emergency Care use cases."
 * ^experimental = false
-* ^date = "2025-01-01"
 * ^publisher = "HL7 International / Public Health"
 * ^jurisdiction = urn:iso:std:iso:3166#US "United States of America"
 
-// Inherited Must Support from US Core Condition Problems and Health Concerns
+// Must Support (US Core requirements, plus any added by this guide) from US Core Condition Problems and Health Concerns
 * clinicalStatus MS
 * verificationStatus MS
 * category MS
 * code MS
 * code ^short = "SCD diagnosis (with subtype) or chronic complication code"
+// Restates the US Core additional binding so it is kept when this profile adds its own.
+* code ^binding.extension[+].url = "http://hl7.org/fhir/tools/StructureDefinition/additional-binding"
+* code ^binding.extension[=].extension[+].url = "key"
+* code ^binding.extension[=].extension[=].valueId = "us-core-condition-code-current"
+* code ^binding.extension[=].extension[+].url = "purpose"
+* code ^binding.extension[=].extension[=].valueCode = #current
+* code ^binding.extension[=].extension[+].url = "valueSet"
+* code ^binding.extension[=].extension[=].valueCanonical = "http://hl7.org/fhir/us/core/ValueSet/us-core-condition-code-current"
+* code ^binding.extension[=].extension[+].url = "documentation"
+* code ^binding.extension[=].extension[=].valueMarkdown = "US Core uses the current additional binding for encoding newly recorded, non-legacy problem list items, health concerns and diagnosis"
+* code ^binding.extension[=].extension[+].url = "shortDoco"
+* code ^binding.extension[=].extension[=].valueString = "Required for new records"
+// Non-constraining reference binding (purpose open): adds no requirement beyond
+// the US Core binding, which still applies.
+* code ^binding.extension[+].url = "http://hl7.org/fhir/tools/StructureDefinition/additional-binding"
+* code ^binding.extension[=].extension[+].url = "key"
+* code ^binding.extension[=].extension[=].valueId = "scd-diagnosis-reference"
+* code ^binding.extension[=].extension[+].url = "purpose"
+* code ^binding.extension[=].extension[=].valueCode = #open
+* code ^binding.extension[=].extension[+].url = "valueSet"
+* code ^binding.extension[=].extension[=].valueCanonical = Canonical(SCDDiagnosisVS)
+* code ^binding.extension[=].extension[+].url = "documentation"
+* code ^binding.extension[=].extension[=].valueMarkdown = "Reference list of SCD diagnosis codes commonly used in SCD care. It does not constrain exchange; the US Core binding applies. ONC maintains the SCD-relevant values for the USCDI+ Problems data element in USCDI+ ([SCD Diagnosis](https://uscdiplus.healthit.gov/uscdiplus?id=uscdi_record&table=x_g_sshh_uscdi_sub_domain&sys_id=84d4c4a23bdd03503cb59d0864e45a2a&view=sp) and [SCD Emergency Care](https://uscdiplus.healthit.gov/uscdiplus?id=uscdi_record&table=x_g_sshh_uscdi_sub_domain&sys_id=a7e444623bdd03503cb59d0864e45a96&view=sp) lists)."
+* code ^binding.extension[=].extension[+].url = "shortDoco"
+* code ^binding.extension[=].extension[=].valueString = "SCD diagnoses (USCDI+)"
+* code ^binding.extension[+].url = "http://hl7.org/fhir/tools/StructureDefinition/additional-binding"
+* code ^binding.extension[=].extension[+].url = "key"
+* code ^binding.extension[=].extension[=].valueId = "scd-acute-complication-reference"
+* code ^binding.extension[=].extension[+].url = "purpose"
+* code ^binding.extension[=].extension[=].valueCode = #open
+* code ^binding.extension[=].extension[+].url = "valueSet"
+* code ^binding.extension[=].extension[=].valueCanonical = Canonical(SCDAcuteComplicationVS)
+* code ^binding.extension[=].extension[+].url = "documentation"
+* code ^binding.extension[=].extension[=].valueMarkdown = "Reference list of acute SCD complication codes commonly used in SCD care. It does not constrain exchange; the US Core binding applies. ONC maintains the SCD-relevant values for the USCDI+ Problems data element in USCDI+ ([SCD Diagnosis](https://uscdiplus.healthit.gov/uscdiplus?id=uscdi_record&table=x_g_sshh_uscdi_sub_domain&sys_id=84d4c4a23bdd03503cb59d0864e45a2a&view=sp) and [SCD Emergency Care](https://uscdiplus.healthit.gov/uscdiplus?id=uscdi_record&table=x_g_sshh_uscdi_sub_domain&sys_id=a7e444623bdd03503cb59d0864e45a96&view=sp) lists)."
+* code ^binding.extension[=].extension[+].url = "shortDoco"
+* code ^binding.extension[=].extension[=].valueString = "SCD acute complications (USCDI+)"
 * code ^comment = """
-  The code SHALL represent the patient's SCD diagnosis. For the primary SCD
-  diagnosis, this SHOULD be the subtype-specific code (e.g., HbSS, HbSC).
+  The code represents the problem or health concern: the SCD diagnosis, an SCD
+  complication or another concern. For the primary SCD diagnosis, this SHOULD
+  be the subtype-specific code (e.g., HbSS, HbSC).
   Use SNOMED CT or ICD-10-CM. Both SHOULD be included when available.
   US Core's preferred binding applies. The SCD Diagnosis value set lists SCD
   diagnosis codes, for reference. Any appropriate code may be used, including
@@ -236,9 +309,8 @@ Description: """
 * recorder MS
 * asserter MS
 * evidence MS
-// TODO: Terminologist to review after the terminology meeting: this guidance on
-// linking supporting lab results through evidence.detail, and whether evidence.detail
-// (rather than evidence.id) should be Must Support.
+// TODO: Project team to decide whether evidence.detail, rather than evidence.id, should be
+// Must Support (OQ-11).
 * evidence ^comment = """
   To link the diagnosis to the laboratory results it is based on (for example,
   a hemoglobin fractionation that confirms the SCD subtype), reference the

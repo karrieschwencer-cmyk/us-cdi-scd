@@ -21,8 +21,7 @@
 // Extends: US Core Patient Profile
 // Purpose: Represents patients with Sickle Cell Disease.
 //          Inherits all US Core Patient Must Support elements.
-//          Race and ethnicity are surfaced as Must Support to support
-//          health equity reporting requirements (USCDI+ SCD initiative).
+//          Race and ethnicity are surfaced as Must Support.
 // ==============================================================================
 
 Profile: SCDPatient
@@ -32,12 +31,12 @@ Title: "USCDI-SCD Patient"
 Description: """
   The USCDI-SCD Patient profile represents a patient with Sickle Cell Disease (SCD)
   or at risk for SCD. This profile extends the [US Core Patient Profile](http://hl7.org/fhir/us/core/STU8.0.1/StructureDefinition-us-core-patient.html)
-  and imposes no additional constraints beyond those defined in US Core, but
-  establishes this as the canonical patient profile for the USCDI-SCD IG,
-  enabling consistent referencing across all other profiles in this guide.
+  and is the patient profile that every other profile in this guide references.
 
-  Race and ethnicity extensions (inherited from US Core) are surfaced here as
-  Must Support elements given their importance in SCD health equity reporting.
+  It adds Must Support to the US Core race and ethnicity extensions, and to
+  telecom and preferred
+  language (communication). It also allows the SCD Newborn Screen Reference
+  extension.
 """
 
 // ----------------------------------------------------------------------------
@@ -50,12 +49,12 @@ Description: """
 // ----------------------------------------------------------------------------
 
 * ^status = #draft
+* ^purpose = "Identifies the person with SCD and carries demographics, including race, ethnicity and preferred language, for the SCD Diagnosis and SCD Emergency Care use cases."
 * ^experimental = false
-* ^date = "2025-01-01"
 * ^publisher = "HL7 International / Public Health"
 * ^jurisdiction = urn:iso:std:iso:3166#US "United States of America"
 
-// Race and ethnicity from US Core — surfaced as Must Support for SCD equity
+// Race and ethnicity from US Core — surfaced as Must Support
 * extension[us-core-race] MS
 * extension[us-core-ethnicity] MS
 
@@ -63,7 +62,7 @@ Description: """
 * extension contains SCDNewbornScreenReferenceExtension named scd-newborn-screen-reference 0..1
 * extension[scd-newborn-screen-reference] ^short = "Newborn screening result that identified SCD"
 
-// Core demographics — inherited Must Support from US Core, stated explicitly
+// Core demographics — Must Support added by this guide (US Core marks some of these as additional USCDI requirements)
 * identifier MS
 * name MS
 * telecom MS
@@ -97,12 +96,12 @@ Description: """
 """
 
 * ^status = #draft
+* ^purpose = "Gives the SCD profiles a consistent reference target for clinicians who diagnose, treat or record care, for the SCD Diagnosis and SCD Emergency Care use cases."
 * ^experimental = false
-* ^date = "2025-01-01"
 * ^publisher = "HL7 International / Public Health"
 * ^jurisdiction = urn:iso:std:iso:3166#US "United States of America"
 
-// Inherited Must Support from US Core Practitioner
+// Must Support (US Core requirements, plus any added by this guide) from US Core Practitioner
 * identifier MS
 * identifier[NPI] MS
 * name MS
@@ -134,16 +133,15 @@ Description: """
   - 207RH0000X — Hematology (Internal Medicine)
   - 207RH0003X — Hematology & Oncology
   - 208D00000X — General Practice
-  - 261QF0400X — Federally Qualified Health Center
 """
 
 * ^status = #draft
+* ^purpose = "Records a clinician's role, specialty and organization (for example, a hematologist at an SCD center), for the SCD Diagnosis and SCD Emergency Care use cases."
 * ^experimental = false
-* ^date = "2025-01-01"
 * ^publisher = "HL7 International / Public Health"
 * ^jurisdiction = urn:iso:std:iso:3166#US "United States of America"
 
-// Inherited Must Support from US Core PractitionerRole
+// Must Support (US Core requirements, plus any added by this guide) from US Core PractitionerRole
 * practitioner MS
 * organization MS
 * code MS
@@ -182,12 +180,12 @@ Description: """
 """
 
 * ^status = #draft
+* ^purpose = "Gives the SCD profiles a consistent reference target for organizations such as SCD centers, hospitals and laboratories."
 * ^experimental = false
-* ^date = "2025-01-01"
 * ^publisher = "HL7 International / Public Health"
 * ^jurisdiction = urn:iso:std:iso:3166#US "United States of America"
 
-// Inherited Must Support from US Core Organization
+// Must Support (US Core requirements, plus any added by this guide) from US Core Organization
 * identifier MS
 * active MS
 * name MS
@@ -212,7 +210,7 @@ Description: """
   care is delivered. This profile extends the [US Core Location Profile](http://hl7.org/fhir/us/core/STU8.0.1/StructureDefinition-us-core-location.html)
   without additional constraints.
 
-  SCD patients receive care across a broad range of locations, including
+  People with SCD receive care across a broad range of locations, including
   emergency departments (often for vaso-occlusive crisis), outpatient
   hematology clinics, day hospitals and infusion centers (for chronic
   transfusion therapy), and inpatient units (for acute chest syndrome,
@@ -220,12 +218,12 @@ Description: """
 """
 
 * ^status = #draft
+* ^purpose = "Records where SCD care took place (for example, an SCD clinic or emergency department), for the SCD Diagnosis and SCD Emergency Care use cases."
 * ^experimental = false
-* ^date = "2025-01-01"
 * ^publisher = "HL7 International / Public Health"
 * ^jurisdiction = urn:iso:std:iso:3166#US "United States of America"
 
-// Inherited Must Support from US Core Location
+// Must Support (US Core requirements, plus any added by this guide) from US Core Location
 * status MS
 * name MS
 * telecom MS

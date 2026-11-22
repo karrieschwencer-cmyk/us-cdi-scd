@@ -51,8 +51,8 @@ Description: """
   **Monitoring/Diagnostic Procedures:**
   - Transcranial Doppler (TCD) ultrasound (stroke risk screening)
   - Echocardiogram (for patients with signs or symptoms of pulmonary
-    hypertension; ASH 2019 suggests against routine screening in
-    asymptomatic patients)
+    hypertension; the ASH 2019 cardiopulmonary and kidney guideline suggests
+    against routine screening echocardiography in asymptomatic patients)
   - Liver MRI (iron quantification — R2*/T2* technique)
 
   When `procedure.code` indicates a transfusion, the procedure SHOULD
@@ -63,15 +63,38 @@ Description: """
 """
 
 * ^status = #draft
+* ^purpose = "Records SCD procedures, such as transfusions and hematopoietic stem cell transplants, for the SCD Emergency Care use case."
 * ^experimental = false
-* ^date = "2025-01-01"
 * ^publisher = "HL7 International / Public Health"
 * ^jurisdiction = urn:iso:std:iso:3166#US "United States of America"
 
-// Inherited Must Support from US Core Procedure
+// Must Support (US Core requirements, plus any added by this guide) from US Core Procedure
 * status MS
 * code MS
 * code ^short = "SCD procedure code (SNOMED CT or CPT)"
+// Restates the US Core additional binding so it is kept when this profile adds its own.
+* code ^binding.extension[+].url = "http://hl7.org/fhir/tools/StructureDefinition/additional-binding"
+* code ^binding.extension[=].extension[+].url = "key"
+* code ^binding.extension[=].extension[=].valueId = "us-core-condition-code-current"
+* code ^binding.extension[=].extension[+].url = "purpose"
+* code ^binding.extension[=].extension[=].valueCode = #current
+* code ^binding.extension[=].extension[+].url = "valueSet"
+* code ^binding.extension[=].extension[=].valueCanonical = "http://hl7.org/fhir/us/core/ValueSet/us-core-procedure-code"
+* code ^binding.extension[=].extension[+].url = "documentation"
+* code ^binding.extension[=].extension[=].valueMarkdown = "US Core uses the current additional binding from FHIR R5 for this coded element for more flexibility when exchanging legacy and text-only data."
+// Non-constraining reference binding (purpose open): adds no requirement beyond
+// the US Core binding, which still applies.
+* code ^binding.extension[+].url = "http://hl7.org/fhir/tools/StructureDefinition/additional-binding"
+* code ^binding.extension[=].extension[+].url = "key"
+* code ^binding.extension[=].extension[=].valueId = "scd-procedure-reference"
+* code ^binding.extension[=].extension[+].url = "purpose"
+* code ^binding.extension[=].extension[=].valueCode = #open
+* code ^binding.extension[=].extension[+].url = "valueSet"
+* code ^binding.extension[=].extension[=].valueCanonical = Canonical(SCDProcedureVS)
+* code ^binding.extension[=].extension[+].url = "documentation"
+* code ^binding.extension[=].extension[=].valueMarkdown = "Reference list of SCD procedure codes commonly used in SCD care. It does not constrain exchange; the US Core binding applies. ONC maintains the SCD-relevant values for the USCDI+ Procedures data element in USCDI+ ([SCD Emergency Care](https://uscdiplus.healthit.gov/uscdiplus?id=uscdi_record&table=x_g_sshh_uscdi_sub_domain&sys_id=a7e444623bdd03503cb59d0864e45a96&view=sp) list)."
+* code ^binding.extension[=].extension[+].url = "shortDoco"
+* code ^binding.extension[=].extension[=].valueString = "SCD procedures (USCDI+)"
 * code ^comment = """
   For transfusion procedures, code SHOULD use SNOMED CT 116863004 or 71493000
   (simple transfusion) or 438839005 (automated red cell exchange). CPT codes
@@ -102,9 +125,9 @@ Description: """
 * usedReference only Reference (SCDMedication or Device )
 // or SCDBiologicallyDerivedProduct
 
-// SCD-specific: antigen matching requested for a transfusion
+// SCD-specific: antigen matching used for the units transfused
 * extension contains SCDTransfusionAntigenMatchExtension named scd-transfusion-antigen-match 0..1
-* extension[scd-transfusion-antigen-match] ^short = "Red cell antigen matching requested for the transfusion"
+* extension[scd-transfusion-antigen-match] ^short = "Red cell antigen matching used for the units transfused"
 
 // ============================================================================== 
 // SCDObservationLaboratoryResult
@@ -143,6 +166,9 @@ Description: """
 //     - Pre-transfusion crossmatch result
 // ==============================================================================
 
+// TODO: Cite a source for the HbSS steady-state hemoglobin range (about 6–9 g/dL)
+//       and for ANC and platelet thresholds in hydroxyurea dose escalation
+//       (for example, the NHLBI 2014 expert panel report), or remove them.
 Profile: SCDObservationLaboratoryResult
 Parent: us-core-observation-lab
 Id: uscdi-scd-laboratory-result
@@ -162,60 +188,80 @@ Description: """
   **Hemoglobin Fractionation:** HPLC or electrophoresis measuring HbS%,
   HbF%, HbA%, HbA2%, HbC% — used for diagnosis confirmation, monitoring
   hydroxyurea response (rise in HbF), and pre/post-transfusion assessment.
-  For chronic transfusion therapy for stroke prevention, the usual goal is a
-  pre-transfusion HbS below 30%. Transfusion is not indicated for
-  uncomplicated vaso-occlusive crisis (NHLBI 2014).
+  For children with HbSS or HbSβ0-thalassemia and a prior ischemic stroke, the
+  [ASH 2020 cerebrovascular guideline](references.html#ash-2020-cerebrovascular) recommends
+  keeping HbS below 30% until the next transfusion. The
+  [NHLBI 2014 expert panel report](references.html#nhlbi-2014) lists
+  uncomplicated painful crisis as an indication for which transfusion is not
+  indicated.
 
   **Hemolysis Markers:** LDH, total/direct bilirubin, haptoglobin, reticulocyte
   count — elevated in SCD due to chronic hemolysis; useful for monitoring
   disease activity and response to therapy.
 
   **Iron Studies and Ferritin:** Used for patients on chronic transfusion
-  therapy to detect and monitor transfusional iron overload. Iron chelation is
-  generally started when serum ferritin is consistently above 1000 mcg/L after
-  substantial transfusion exposure (deferasirox labeling); MRI liver iron
-  concentration is the preferred measure because ferritin rises with
-  inflammation.
+  therapy to detect and monitor transfusional iron overload. The
+  [deferasirox (Exjade) labeling](references.html#label-deferasirox) calls for
+  a serum ferritin consistently greater than 1,000 mcg/L, with transfusion of
+  at least 100 mL/kg of packed red blood cells, before starting therapy. The
+  [ASH 2020 transfusion guideline](references.html#ash-2020-transfusion) suggests MRI
+  of liver iron content every 1 to 2 years rather than ferritin monitoring
+  alone.
 
-  **Renal Function:** Serum creatinine, eGFR, and urine albumin — kidney
-  disease is a common chronic complication of SCD. NHLBI 2014 recommends
-  screening for proteinuria starting by age 10, repeated annually if normal.
+  **Renal Function:** Serum creatinine, eGFR, and urine albumin. The
+  [NHLBI 2014 expert panel report](references.html#nhlbi-2014) recommends
+  screening all individuals with SCD for proteinuria beginning by age 10, and
+  repeating the screen annually if it is negative.
 
-  **Immunohematology:** An extended red cell antigen profile (Rh, Kell, Duffy,
-  Kidd, MNS), preferably by genotyping, is recommended for all patients with
-  SCD at the earliest opportunity, ideally before the first transfusion
-  (ASH 2020). Red cell antibody screening detects alloantibodies that may
+  **Immunohematology:** The [ASH 2020 transfusion guideline](references.html#ash-2020-transfusion)
+  suggests an extended red cell antigen profile (at minimum C/c, E/e, K,
+  Jka/Jkb, Fya/Fyb, M/N and S/s), by genotype or serology, for all patients
+  with SCD at the earliest opportunity, optimally before the first
+  transfusion; it prefers genotyping. Red cell antibody screening detects alloantibodies that may
   develop over time.
 
-  Laboratory results SHALL use LOINC codes for `observation.code`. Results
-  SHOULD include reference ranges where applicable.
+  Laboratory results use LOINC codes for `Observation.code`, as US Core requires
+  (extensible binding). Results SHOULD include reference ranges where applicable.
 """
 
 * ^status = #draft
+* ^purpose = "Records laboratory results used to diagnose and monitor SCD, such as hemoglobin fractionation, for the SCD Diagnosis and SCD Emergency Care use cases."
 * ^experimental = false
-* ^date = "2025-01-01"
 * ^publisher = "HL7 International / Public Health"
 * ^jurisdiction = urn:iso:std:iso:3166#US "United States of America"
 
-// Inherited Must Support from US Core Lab Result
+// Must Support (US Core requirements, plus any added by this guide) from US Core Lab Result
 * status MS
 * category MS
 * code MS
 * code ^short = "LOINC code for SCD laboratory test"
 * code ^comment = """
-  SCD laboratory tests SHALL be coded using LOINC. Common SCD LOINC codes:
+  SCD laboratory tests are coded using LOINC, as US Core requires. Common SCD
+  LOINC codes:
   - Hemoglobin: 718-7
   - Hemoglobin S %: 4625-0
   - Hemoglobin F %: 4576-5
   - LDH: 14804-9
   - Ferritin: 2276-4
   - Serum creatinine: 2160-0
-  - Urine albumin/creatinine ratio: 14959-1
+  - Urine albumin/creatinine ratio: 14959-1 or 9318-7
   - Reticulocyte count: 17849-1
-  - See SCDLaboratoryPanelVS for a reference list of SCD laboratory tests.
   US Core requires LOINC codes here (extensible binding). The SCD Laboratory
   Panel value set lists tests commonly used in SCD care, for reference.
 """
+// Non-constraining reference binding (purpose open): adds no requirement beyond
+// the US Core binding, which still applies.
+* code ^binding.extension[+].url = "http://hl7.org/fhir/tools/StructureDefinition/additional-binding"
+* code ^binding.extension[=].extension[+].url = "key"
+* code ^binding.extension[=].extension[=].valueId = "scd-laboratory-reference"
+* code ^binding.extension[=].extension[+].url = "purpose"
+* code ^binding.extension[=].extension[=].valueCode = #open
+* code ^binding.extension[=].extension[+].url = "valueSet"
+* code ^binding.extension[=].extension[=].valueCanonical = Canonical(SCDLaboratoryPanelVS)
+* code ^binding.extension[=].extension[+].url = "documentation"
+* code ^binding.extension[=].extension[=].valueMarkdown = "Reference list of laboratory tests commonly used in SCD care. It does not constrain exchange; the US Core binding applies. ONC maintains the SCD-relevant values for the USCDI+ Tests data element in USCDI+ ([SCD Diagnosis](https://uscdiplus.healthit.gov/uscdiplus?id=uscdi_record&table=x_g_sshh_uscdi_sub_domain&sys_id=84d4c4a23bdd03503cb59d0864e45a2a&view=sp) and [SCD Emergency Care](https://uscdiplus.healthit.gov/uscdiplus?id=uscdi_record&table=x_g_sshh_uscdi_sub_domain&sys_id=a7e444623bdd03503cb59d0864e45a96&view=sp) lists)."
+* code ^binding.extension[=].extension[+].url = "shortDoco"
+* code ^binding.extension[=].extension[=].valueString = "SCD reference list (USCDI+)"
 * subject MS
 * subject only Reference(SCDPatient)
 * effective[x] MS
@@ -246,7 +292,7 @@ Description: """
 //     of VOC severity and treatment response
 //   - Blood pressure: hypertension complicates renal disease; hypotension
 //     may indicate sepsis or severe anemia
-//   - Temperature: fever is a medical emergency in asplenic SCD patients
+//   - Temperature: NHLBI 2014 calls for immediate evaluation at 38.5 C or higher
 //   - Respiratory rate: elevated in ACS; used for sepsis screening
 //   - Heart rate: tachycardia in anemia, infection, or pain
 //   - Body weight: important for hydroxyurea and crizanlizumab dosing
@@ -264,11 +310,12 @@ Description: """
   Vital signs are particularly important in SCD for:
 
   **Oxygen Saturation (SpO2):**
-  Pulse oximetry is essential for detecting and monitoring Acute Chest Syndrome
-  (ACS), a leading cause of death in SCD. Mean baseline SpO2 is lower in people
-  with SCD than in the general population. NHLBI 2014 recommends supplemental
-  oxygen when SpO2 is below 95% on room air in patients with suspected ACS.
-  Systems SHALL support SpO2 measurement.
+  The [NHLBI 2014 expert panel report](references.html#nhlbi-2014) calls for
+  pulse oximetry when evaluating a patient for acute chest syndrome (ACS),
+  supplemental oxygen to keep SpO2 above 95% in ACS, and oxygen when SpO2 is
+  below 95% on room air during a vaso-occlusive crisis.
+  Systems that exchange vital signs are expected to include SpO2 when it is
+  measured.
   LOINC: 2708-6 and 59408-5 (Oxygen saturation by pulse oximetry), as required
   by US Core.
 
@@ -280,29 +327,29 @@ Description: """
   LOINC: 38208-5 (Pain severity - Reported).
 
   **Temperature:**
-  Fever (≥38.5°C / ≥101.3°F) in a patient with SCD is a medical emergency
-  (NHLBI 2014) because functional asplenia increases the risk of invasive
-  bacterial infection and sepsis (for example, Streptococcus pneumoniae).
-  Temperature SHALL be recorded for all ED and urgent care encounters.
+  The NHLBI 2014 expert panel report calls for immediate evaluation of people
+  with SCD who have a temperature of 38.5°C (101.3°F) or higher, because of the
+  risk of severe bacterial infection.
+  Temperature is expected to be recorded for ED and urgent care encounters.
 
   **Blood Pressure:**
-  Kidney disease and hypertension are complications of SCD. SCD patients
-  often have lower baseline blood pressure; relative hypertension can be
-  clinically significant even within the "normal" range. ASH 2019 suggests a
-  blood pressure goal of 130/80 mmHg or lower for adults with SCD.
+  The [ASH 2019 cardiopulmonary and kidney guideline](references.html#ash-2019-cardiopulmonary-kidney)
+  recommends a blood pressure goal below 130/80 mm Hg, over below 140/90 mm Hg,
+  for adults with SCD (as amended by its [2023 correction](references.html#ash-2019-cardiopulmonary-kidney-correction)), and notes that baseline blood pressures are
+  lower in the SCD population.
 
-  **Respiratory Rate and Heart Rate:**
-  Tachycardia and tachypnea can be early signs of ACS, sepsis, and severe
-  anemia.
+  **Respiratory Rate:**
+  The NHLBI 2014 expert panel report lists tachypnea among the signs that
+  should prompt evaluation for ACS.
 """
 
 * ^status = #draft
+* ^purpose = "Records vital signs relevant to SCD, such as oxygen saturation and temperature, for the SCD Emergency Care use case."
 * ^experimental = false
-* ^date = "2025-01-01"
 * ^publisher = "HL7 International / Public Health"
 * ^jurisdiction = urn:iso:std:iso:3166#US "United States of America"
 
-// Inherited Must Support from US Core Vital Signs
+// Must Support (US Core requirements, plus any added by this guide) from US Core Vital Signs
 * status MS
 * category MS
 * code MS
@@ -317,9 +364,9 @@ Description: """
 * component.value[x] MS
 * component.dataAbsentReason MS
 
-// SpO2 and Pain Score are Must Support for SCD-specific monitoring
+// SpO2 and pain score are the vital signs most relevant to SCD monitoring
 * code ^comment = """
-  SCD-critical vital signs (SHALL be supported):
+  Vital signs most relevant to SCD:
   - SpO2: LOINC 2708-6 and 59408-5 (ACS detection)
   - Pain score (NRS 0-10): LOINC 38208-5 (VOC assessment)
   - Body temperature: LOINC 8310-5
@@ -353,6 +400,8 @@ Description: """
 //   - request: links back to the ServiceRequest (transfusion order)
 // ==============================================================================
 
+// TODO: Cite a source for chronic transfusion to prevent recurrent acute chest
+//       syndrome when hydroxyurea is not effective, then restore it below.
 Profile: SCDBiologicallyDerivedProduct
 Parent: BiologicallyDerivedProduct
 Id: uscdi-scd-biologicallyderivedproduct
@@ -366,29 +415,31 @@ Description: """
 
   **Role in SCD Care:**
 
-  Transfusion therapy is a cornerstone of SCD management. Blood products are
-  used for:
+  Red cell transfusion remains a mainstay of SCD therapy
+  ([ASH 2020 transfusion guideline](references.html#ash-2020-transfusion)). Blood products
+  are used for:
   - **Acute transfusion:** Rapid correction of severe anemia (aplastic crisis,
     splenic sequestration), preparation for surgery, or stroke treatment
   - **Chronic transfusion therapy:** Regular simple or exchange transfusions
-    for primary and secondary stroke prevention, and to prevent recurrent
-    acute chest syndrome when hydroxyurea is not effective (NHLBI 2014).
+    for primary and secondary stroke prevention ([NHLBI 2014 expert panel report](references.html#nhlbi-2014);
+    [ASH 2020 cerebrovascular guideline](references.html#ash-2020-cerebrovascular)).
     Transfusion is not indicated for uncomplicated vaso-occlusive crisis.
   - **Automated red cell exchange (erythrocytapheresis):** Replaces patient
-    red cells with donor cells; lowers HbS% more effectively than simple
-    transfusion with less iron loading
+    red cells with donor cells. The ASH 2020 transfusion guideline suggests
+    automated exchange over simple transfusion or manual exchange for chronic
+    transfusion, mainly because it was associated with less iron overload
   - **Hematopoietic stem cell transplantation (HSCT):** Allogeneic hematopoietic
     progenitor cell products (HPC-A or HPC-M) used in curative HSCT
 
   **Antigen Matching:**
 
-  People with SCD who receive transfusions are at high risk for red cell
-  alloimmunization, in part because of antigen differences between a donor
-  pool that is predominantly of European ancestry and recipients who are
-  predominantly of African ancestry. ASH 2020 recommends prophylactic
-  matching for Rh (C, E or C/c, E/e) and K antigens. Additional matching
-  (for example, Fy, Jk and S) is generally reserved for patients who have
-  already formed alloantibodies. This profile supports documentation of
+  The [ASH 2020 transfusion guideline](references.html#ash-2020-transfusion) reports
+  that red cell alloimmunization incidence in SCD is the highest of any
+  transfused patient population. RH genetic diversity is one risk factor: most
+  patients with SCD have at least one RH allele that differs from those found
+  in people of European descent. The guideline recommends prophylactic
+  matching for Rh (C, E or C/c, E/e) and K antigens, and notes that extended
+  matching (Jka/Jkb, Fya/Fyb, S/s) may provide further protection. This profile supports documentation of
   antigen matching via extension or the processing element.
 
   **Product Coding:**
@@ -402,15 +453,14 @@ Description: """
   **Limitations in FHIR R4:**
 
   The FHIR R4 BiologicallyDerivedProduct resource has limited granularity
-  compared to FHIR R5. Key information about antigen matching, irradiation
-  status, and leukoreduction may require extension elements in R4.
-  This profile defines extensions for SCD-specific blood product attributes.
-  See [Extensions](extensions.html) for the list of extensions applied here.
+  compared to FHIR R5. This profile records antigen matching and product age
+  with extensions, and irradiation, leukoreduction and other processing steps
+  with codes in processing.procedure. See [Extensions](extensions.html).
 """
 
 * ^status = #draft
+* ^purpose = "Records blood products transfused to a person with SCD, including antigen matching and processing, for the SCD Emergency Care use case."
 * ^experimental = false
-* ^date = "2025-01-01"
 * ^publisher = "HL7 International / Public Health"
 * ^jurisdiction = urn:iso:std:iso:3166#US "United States of America"
 
@@ -423,7 +473,9 @@ Description: """
 
 // Product identification
 * productCode MS
-* productCode ^short = "Blood product type code (SNOMED CT; ISBT 128 optional)"
+* productCode ^short = "Blood product type code (SNOMED CT; ISBT 128 planned for a future version)"
+// TODO: add codes for hematopoietic progenitor cells from bone marrow and cord
+//       blood (no SNOMED CT product concepts exist; consider ISBT 128).
 * productCode ^comment = """
   Use SNOMED CT product codes. ISBT 128 product codes MAY be included as an
   additional coding; ISBT 128 requirements are planned for a future version.
@@ -432,8 +484,7 @@ Description: """
   - 431069006 — Packed red blood cells
   - 126251004 — Leukocyte reduced red blood cells, human
   - 126256009 — Red blood cells, human, irradiated
-  Open item: add codes for hematopoietic progenitor cell products (HPC-A, HPC-M,
-  cord blood); no SNOMED CT equivalents were found.
+  - 1351653002 — Stem cells, apheresis
 
   The SCD Blood Product Type value set lists common products (example binding).
 """
@@ -441,7 +492,7 @@ Description: """
 
 // Status of the product
 * status MS
-* status ^short = "available | unavailable | unsatisfactory | entered-in-error"
+* status ^short = "available | unavailable"
 
 // Product category
 * productCategory MS
@@ -466,18 +517,20 @@ Description: """
 // Processing (irradiation, leukoreduction, antigen matching)
 * processing MS
 * processing ^short = "Product processing steps (irradiation, leukoreduction, CMV-neg)"
+// TODO: Cite a transfusion guideline for irradiation indications.
 * processing ^comment = """
   Document processing modifiers applied to the blood product. SCD-specific
   processing considerations:
-  - Leukoreduction: Standard for SCD patients (reduces febrile reactions,
-    CMV transmission, and HLA alloimmunization)
-  - Irradiation: Indicated for specific groups, such as HSCT candidates and
-    recipients and patients with congenital cellular immunodeficiency
-    (AABB/BSH guidance); not routinely required for SCD
-  - CMV-seronegative units: An institutional choice for selected patients;
-    leukoreduced units are widely accepted as CMV-safe
-  - Antigen-negative units: Rh (C, E or C/c, E/e) and K at minimum (ASH 2020);
-    additional antigens for alloimmunized patients — document matched
+  - Leukoreduction: The NHLBI 2014 expert panel report notes that most red
+    cell units given to people with SCD in the United States are leukoreduced;
+    benefits documented in other populations include fewer febrile
+    non-hemolytic reactions, less CMV transmission and less HLA alloimmunization
+  - Irradiation: Indicated for specific patient groups per transfusion
+    guidelines and institutional policy
+  - CMV-seronegative units: An institutional choice for selected patients
+  - Antigen-negative units: Rh (C, E or C/c, E/e) and K at minimum (ASH 2020
+    transfusion guideline); extended matching (Jk, Fy, S) per institutional
+    protocol — document matched
     antigens in the processing description or via extension
 
   processing.procedure has an example binding to the SCD Blood Product
